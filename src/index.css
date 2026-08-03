@@ -1,0 +1,2542 @@
+@import "tailwindcss";
+
+/* =========================================================
+   ROOT DESIGN SYSTEM
+========================================================= */
+
+:root {
+  font-family:
+    Inter,
+    "DM Sans",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color-scheme: light;
+
+  --background: #fffdfc;
+  --background-white: #ffffff;
+  --background-soft: #fff8f5;
+  --background-warm: #f8f4f1;
+  --background-blue: #f2f8ff;
+  --background-green: #f1faf5;
+  --background-purple: #f8f4ff;
+  --background-yellow: #fff9e8;
+
+  --heading: #262626;
+  --heading-dark: #171717;
+
+  --text-primary: #383838;
+  --text-secondary: #717171;
+  --text-muted: #9d9d9d;
+
+  --primary: #ff685b;
+  --primary-hover: #f45448;
+  --primary-dark: #df453c;
+  --primary-soft: #fff0ed;
+  --primary-soft-2: #ffe8e4;
+
+  --orange: #ff8a63;
+  --blue: #4f86ff;
+  --green: #38b879;
+  --purple: #996cff;
+  --yellow: #f7bd46;
+
+  --border: #eee9e6;
+  --border-soft: rgba(54, 40, 35, 0.07);
+  --border-strong: #ded7d2;
+
+  --glass-border: rgba(255, 255, 255, 0.85);
+
+  --shadow-xs:
+    0 4px 14px
+    rgba(52, 35, 29, 0.04);
+
+  --shadow-sm:
+    0 10px 30px
+    rgba(52, 35, 29, 0.06);
+
+  --shadow-md:
+    0 20px 55px
+    rgba(52, 35, 29, 0.08);
+
+  --shadow-lg:
+    0 32px 90px
+    rgba(52, 35, 29, 0.1);
+
+  --shadow-coral:
+    0 18px 45px
+    rgba(255, 104, 91, 0.2);
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+
+  overflow-x: hidden;
+
+  background: var(--background);
+
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+
+  margin: 0;
+
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at 8% 12%,
+      rgba(255, 104, 91, 0.045),
+      transparent 24rem
+    ),
+    radial-gradient(
+      circle at 94% 18%,
+      rgba(79, 134, 255, 0.04),
+      transparent 25rem
+    ),
+    var(--background);
+
+  color: var(--text-primary);
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+button {
+  border: 0;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================================================
+   SAFE OVERFLOW
+========================================================= */
+
+#root {
+  min-height: 100vh;
+
+  overflow-x: clip;
+}
+
+main {
+  overflow-x: clip;
+}
+
+/* =========================================================
+   SECTION ANCHORS
+
+   Prevent fixed navbar from covering headings.
+========================================================= */
+
+section[id] {
+  scroll-margin-top: 90px;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.site-container {
+  width: min(
+    calc(100% - 32px),
+    1320px
+  );
+
+  margin-inline: auto;
+}
+
+/* =========================================================
+   SECTION SPACING
+========================================================= */
+
+.section-spacing {
+  padding-block: 90px;
+}
+
+.section-white {
+  background: #ffffff;
+}
+
+.section-soft {
+  background: #fff8f5;
+}
+
+.section-warm {
+  background: #f8f4f1;
+}
+
+.section-blue {
+  background: #f2f8ff;
+}
+
+.section-green {
+  background: #f1faf5;
+}
+
+.section-purple {
+  background: #f8f4ff;
+}
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  color: var(--primary);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+
+  width: 28px;
+  height: 2px;
+
+  flex-shrink: 0;
+
+  border-radius: 999px;
+
+  background: var(--primary);
+}
+
+.section-title {
+  max-width: 1000px;
+
+  margin: 0;
+
+  color: var(--heading);
+
+  font-size:
+    clamp(
+      2.8rem,
+      6vw,
+      5.9rem
+    );
+
+  font-weight: 700;
+
+  line-height: 0.94;
+
+  letter-spacing: -0.065em;
+}
+
+.section-description {
+  max-width: 650px;
+
+  color: var(--text-secondary);
+
+  font-size: 15px;
+
+  line-height: 1.9;
+}
+
+.gradient-text {
+  background:
+    linear-gradient(
+      135deg,
+      #ff685b 0%,
+      #ff8a63 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+/* =========================================================
+   GLASS
+========================================================= */
+
+.glass-card {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.82
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.66
+    );
+
+  box-shadow:
+    0 18px 45px
+    rgba(
+      55,
+      37,
+      30,
+      0.07
+    );
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+}
+
+.glass-card-soft {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.7
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.48
+    );
+
+  box-shadow:
+    0 15px 40px
+    rgba(
+      55,
+      37,
+      30,
+      0.05
+    );
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+}
+
+.glass-card-premium {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        255,
+        255,
+        255,
+        0.78
+      ),
+      rgba(
+        255,
+        255,
+        255,
+        0.56
+      )
+    );
+
+  box-shadow:
+    0 22px 65px
+    rgba(
+      53,
+      37,
+      30,
+      0.09
+    );
+
+  backdrop-filter:
+    blur(24px);
+
+  -webkit-backdrop-filter:
+    blur(24px);
+}
+
+/* =========================================================
+   PREMIUM CARDS
+========================================================= */
+
+.premium-card {
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 30px;
+
+  background: #ffffff;
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+.soft-card {
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 30px;
+
+  background:
+    #faf7f5;
+}
+
+.coral-card {
+  border:
+    1px solid
+    #ffdcd7;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff0ed,
+      #fff9f7
+    );
+}
+
+.blue-card {
+  border:
+    1px solid
+    #dbe8ff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #edf5ff,
+      #f9fcff
+    );
+}
+
+.green-card {
+  border:
+    1px solid
+    #d8eee1;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eefaf3,
+      #f9fdfa
+    );
+}
+
+.purple-card {
+  border:
+    1px solid
+    #e6dcf8;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f6f0ff,
+      #fcfaff
+    );
+}
+
+.yellow-card {
+  border:
+    1px solid
+    #f4e5ba;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff8e5,
+      #fffdf5
+    );
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.primary-button {
+  position: relative;
+
+  display: inline-flex;
+
+  min-height: 52px;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff685b,
+      #ff7969
+    );
+
+  padding:
+    0 22px;
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  box-shadow:
+    var(--shadow-coral);
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.primary-button:hover {
+  transform:
+    translateY(-3px);
+
+  background:
+    #292929;
+
+  box-shadow:
+    0 16px 40px
+    rgba(
+      35,
+      29,
+      26,
+      0.16
+    );
+}
+
+.secondary-button {
+  display: inline-flex;
+
+  min-height: 52px;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  border:
+    1px solid
+    #e9dfda;
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.8
+    );
+
+  padding:
+    0 22px;
+
+  color: #4f4945;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.secondary-button:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    #ffc4bd;
+
+  background:
+    #fff0ed;
+
+  color:
+    #ff685b;
+}
+
+.dark-button {
+  display: inline-flex;
+
+  min-height: 52px;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  border-radius: 999px;
+
+  background:
+    #292929;
+
+  padding:
+    0 22px;
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
+}
+
+.dark-button:hover {
+  transform:
+    translateY(-3px);
+
+  background:
+    var(--primary);
+}
+
+.icon-button {
+  display: inline-flex;
+
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  border:
+    1px solid
+    var(--border);
+
+  background: white;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.icon-button:hover {
+  transform:
+    translateY(-2px);
+
+  background:
+    #292929;
+
+  color: white;
+}
+
+.text-link {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #292929;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition:
+    gap 0.3s ease,
+    color 0.3s ease;
+}
+
+.text-link:hover {
+  gap: 12px;
+
+  color:
+    var(--primary);
+}
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.status-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
+  padding:
+    8px 12px;
+
+  box-shadow:
+    var(--shadow-xs);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+
+  flex-shrink: 0;
+
+  border-radius: 999px;
+
+  background:
+    #34b778;
+
+  box-shadow:
+    0 0 0 5px
+    rgba(
+      52,
+      183,
+      120,
+      0.1
+    );
+}
+
+.premium-tag {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
+  padding:
+    7px 11px;
+
+  color:
+    #77706c;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing:
+    0.08em;
+
+  text-transform:
+    uppercase;
+}
+
+/* =========================================================
+   FLOATING
+========================================================= */
+
+.floating-card {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.88
+    );
+
+  border-radius:
+    18px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
+
+  box-shadow:
+    0 18px 45px
+    rgba(
+      55,
+      37,
+      30,
+      0.08
+    );
+
+  backdrop-filter:
+    blur(20px);
+
+  -webkit-backdrop-filter:
+    blur(20px);
+}
+
+/* =========================================================
+   BROWSER FRAME
+========================================================= */
+
+.browser-frame {
+  overflow: hidden;
+
+  border:
+    1px solid
+    #ebe3df;
+
+  border-radius:
+    26px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+.browser-toolbar {
+  display: flex;
+
+  min-height: 46px;
+
+  align-items: center;
+
+  border-bottom:
+    1px solid
+    #eee8e5;
+
+  background:
+    #ffffff;
+
+  padding-inline:
+    16px;
+}
+
+.browser-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius:
+    50%;
+}
+
+/* =========================================================
+   BACKGROUND PATTERNS
+========================================================= */
+
+.background-grid {
+  background-image:
+    linear-gradient(
+      rgba(
+        60,
+        50,
+        45,
+        0.045
+      )
+      1px,
+      transparent
+      1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(
+        60,
+        50,
+        45,
+        0.045
+      )
+      1px,
+      transparent
+      1px
+    );
+
+  background-size:
+    30px 30px;
+}
+
+.background-dots {
+  background-image:
+    radial-gradient(
+      rgba(
+        70,
+        57,
+        50,
+        0.11
+      )
+      1px,
+      transparent
+      1px
+    );
+
+  background-size:
+    22px 22px;
+}
+
+/* =========================================================
+   GLOWS
+========================================================= */
+
+.coral-glow {
+  background:
+    rgba(
+      255,
+      104,
+      91,
+      0.14
+    );
+
+  filter:
+    blur(100px);
+}
+
+.blue-glow {
+  background:
+    rgba(
+      79,
+      134,
+      255,
+      0.12
+    );
+
+  filter:
+    blur(110px);
+}
+
+.blue-blur {
+  background:
+    rgba(
+      79,
+      134,
+      255,
+      0.1
+    );
+
+  filter:
+    blur(90px);
+}
+
+.blur-circle {
+  border-radius: 50%;
+
+  filter:
+    blur(90px);
+}
+
+/* =========================================================
+   ORBS
+========================================================= */
+
+.floating-orb {
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff8977,
+      #ff5f53
+    );
+
+  box-shadow:
+    0 30px 65px
+    rgba(
+      255,
+      104,
+      91,
+      0.22
+    );
+}
+
+/* =========================================================
+   IMAGE FRAME
+========================================================= */
+
+.image-frame {
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    30px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.section-divider {
+  height: 1px;
+
+  border: 0;
+
+  background:
+    var(--border);
+}
+
+/* =========================================================
+   FORM INPUT
+========================================================= */
+
+.form-input {
+  width: 100%;
+
+  min-height: 54px;
+
+  border:
+    1px solid
+    #e8dfda;
+
+  border-radius:
+    16px;
+
+  background:
+    #fffaf8;
+
+  padding:
+    0 16px;
+
+  color:
+    #292929;
+
+  font-size:
+    14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.form-input::placeholder {
+  color:
+    #aaa29d;
+}
+
+.form-input:focus {
+  border-color:
+    var(--primary);
+
+  background:
+    white;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      255,
+      104,
+      91,
+      0.08
+    );
+}
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+.marquee {
+  width: 100%;
+
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+
+  width: max-content;
+
+  align-items: center;
+
+  gap: 38px;
+
+  animation:
+    marqueeScroll
+    28s
+    linear
+    infinite;
+
+  will-change:
+    transform;
+}
+
+.marquee:hover
+.marquee-track {
+  animation-play-state:
+    paused;
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform:
+      translateX(0);
+  }
+
+  to {
+    transform:
+      translateX(-50%);
+  }
+}
+
+/* =========================================================
+   HOVER HELPERS
+========================================================= */
+
+.hover-lift {
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.hover-lift:hover {
+  transform:
+    translateY(-6px);
+
+  box-shadow:
+    var(--shadow-md);
+}
+
+.premium-border {
+  position: relative;
+}
+
+.premium-border::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.75
+    );
+
+  border-radius: inherit;
+}
+
+/* =========================================================
+   CORAL UNDERLINE
+========================================================= */
+
+.coral-underline {
+  position: relative;
+
+  display: inline-block;
+}
+
+.coral-underline::after {
+  content: "";
+
+  position: absolute;
+
+  right: 3%;
+  bottom: -4px;
+  left: 3%;
+
+  height: 6px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      255,
+      104,
+      91,
+      0.18
+    );
+}
+
+/* =========================================================
+   SHINE
+========================================================= */
+
+.shine-effect {
+  position: relative;
+
+  overflow: hidden;
+}
+
+.shine-effect::before {
+  content: "";
+
+  position: absolute;
+
+  top: -30%;
+  bottom: -30%;
+  left: -60%;
+
+  width: 34%;
+
+  pointer-events:
+    none;
+
+  transform:
+    rotate(14deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        255,
+        255,
+        255,
+        0.45
+      ),
+      transparent
+    );
+
+  transition:
+    left 0.75s ease;
+}
+
+.shine-effect:hover::before {
+  left: 130%;
+}
+
+/* =========================================================
+   CARD GLOW
+========================================================= */
+
+.card-glow {
+  position: relative;
+}
+
+.card-glow::after {
+  content: "";
+
+  position: absolute;
+
+  z-index: -1;
+
+  inset: auto 8% -10px;
+
+  height: 30px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      104,
+      91,
+      0.14
+    );
+
+  filter:
+    blur(26px);
+
+  opacity: 0;
+
+  transition:
+    opacity 0.35s ease;
+}
+
+.card-glow:hover::after {
+  opacity: 1;
+}
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
+========================================================= */
+
+:focus-visible {
+  outline:
+    3px solid
+    rgba(
+      255,
+      104,
+      91,
+      0.38
+    );
+
+  outline-offset:
+    4px;
+}
+
+/* =========================================================
+   TEXT SELECTION
+========================================================= */
+
+::selection {
+  background:
+    #ff685b;
+
+  color:
+    white;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background:
+    #f6f1ee;
+}
+
+::-webkit-scrollbar-thumb {
+  border:
+    2px solid
+    #f6f1ee;
+
+  border-radius:
+    999px;
+
+  background:
+    #d6cbc5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:
+    #ff8d82;
+}
+
+/* =========================================================
+   LARGE TABLET / SMALL LAPTOP
+   1024 - 1279
+========================================================= */
+
+@media (
+  min-width: 1024px
+) and (
+  max-width: 1279px
+) {
+  .site-container {
+    width:
+      calc(100% - 56px);
+  }
+
+  .section-spacing {
+    padding-block:
+      115px;
+  }
+}
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (
+  min-width: 1280px
+) {
+  .section-spacing {
+    padding-block:
+      138px;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 1023px
+) {
+  .site-container {
+    width:
+      min(
+        calc(
+          100% - 40px
+        ),
+        1320px
+      );
+  }
+
+  .section-spacing {
+    padding-block:
+      90px;
+  }
+
+  .section-title {
+    font-size:
+      clamp(
+        2.7rem,
+        8vw,
+        5rem
+      );
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 767px
+) {
+  section[id] {
+    scroll-margin-top:
+      78px;
+  }
+
+  .site-container {
+    width:
+      calc(100% - 30px);
+  }
+
+  .section-spacing {
+    padding-block:
+      76px;
+  }
+
+  .eyebrow {
+    gap: 9px;
+
+    font-size:
+      9px;
+
+    letter-spacing:
+      0.17em;
+  }
+
+  .eyebrow::before {
+    width: 22px;
+  }
+
+  .section-title {
+    font-size:
+      clamp(
+        2.5rem,
+        12vw,
+        4rem
+      );
+
+    line-height:
+      0.96;
+  }
+
+  .section-description {
+    font-size:
+      14px;
+
+    line-height:
+      1.8;
+  }
+
+  .premium-card,
+  .soft-card,
+  .image-frame {
+    border-radius:
+      24px;
+  }
+
+  .glass-card {
+    backdrop-filter:
+      blur(14px);
+
+    -webkit-backdrop-filter:
+      blur(14px);
+  }
+
+  .glass-card-premium {
+    backdrop-filter:
+      blur(18px);
+
+    -webkit-backdrop-filter:
+      blur(18px);
+  }
+
+  .primary-button,
+  .secondary-button,
+  .dark-button {
+    min-height:
+      50px;
+
+    padding-inline:
+      18px;
+  }
+
+  .background-grid {
+    background-size:
+      24px 24px;
+  }
+
+  .background-dots {
+    background-size:
+      18px 18px;
+  }
+
+  .marquee-track {
+    gap: 24px;
+
+    animation-duration:
+      34s;
+  }
+
+  /* =======================================================
+     DISABLE DESKTOP-STYLE HOVER MOVEMENT ON TOUCH SCREENS
+  ======================================================= */
+
+  .hover-lift:hover {
+    transform: none;
+  }
+
+  .card-glow:hover::after {
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   320 - 479
+========================================================= */
+
+@media (
+  max-width: 479px
+) {
+  .site-container {
+    width:
+      calc(100% - 24px);
+  }
+
+  .section-spacing {
+    padding-block:
+      66px;
+  }
+
+  .section-title {
+    font-size:
+      clamp(
+        2.2rem,
+        12vw,
+        3.35rem
+      );
+
+    letter-spacing:
+      -0.055em;
+  }
+
+  .section-description {
+    font-size:
+      13px;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .dark-button {
+    width: 100%;
+
+    min-height:
+      50px;
+  }
+
+  .premium-tag {
+    padding:
+      6px 9px;
+
+    font-size:
+      8px;
+  }
+
+  .coral-underline::after {
+    height: 4px;
+  }
+
+  .browser-toolbar {
+    min-height: 40px;
+
+    padding-inline:
+      12px;
+  }
+
+  .browser-dot {
+    width: 7px;
+    height: 7px;
+  }
+}
+
+/* =========================================================
+   EXTRA SMALL DEVICES
+========================================================= */
+
+@media (
+  max-width: 359px
+) {
+  .site-container {
+    width:
+      calc(100% - 20px);
+  }
+
+  .section-spacing {
+    padding-block:
+      60px;
+  }
+
+  .eyebrow {
+    font-size:
+      8px;
+  }
+
+  .section-title {
+    font-size:
+      2.15rem;
+  }
+
+  .premium-tag {
+    font-size:
+      7px;
+  }
+}
+
+/* =========================================================
+   TOUCH DEVICES
+
+   Hover animations are nice on desktop,
+   but unnecessary on phones/tablets.
+========================================================= */
+
+@media (
+  hover: none
+) and (
+  pointer: coarse
+) {
+  .hover-lift:hover,
+  .primary-button:hover,
+  .secondary-button:hover,
+  .dark-button:hover,
+  .icon-button:hover {
+    transform: none;
+  }
+
+  .shine-effect::before {
+    display: none;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE DEVCRAFT MARQUEE
+========================================================= */
+
+@keyframes devcraftMarquee {
+  from {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+
+  to {
+    transform:
+      translate3d(
+        -33.333%,
+        0,
+        0
+      );
+  }
+}
+
+@keyframes devcraftMarqueeReverse {
+  from {
+    transform:
+      translate3d(
+        -33.333%,
+        0,
+        0
+      );
+  }
+
+  to {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+}
+
+/* =========================================================
+   DEVCRAFT — FINAL RESPONSIVE AUDIT
+   Phase 8.5M.8
+========================================================= */
+
+/* =========================================================
+   1. GLOBAL OVERFLOW PROTECTION
+========================================================= */
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+#root,
+main,
+section,
+header,
+footer,
+nav {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   2. MEDIA SAFETY
+========================================================= */
+
+img,
+svg,
+video,
+canvas,
+picture {
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+img {
+  display: block;
+}
+
+
+/* =========================================================
+   3. GRID / FLEX CHILD SAFETY
+
+   Prevent long text and images from forcing
+   grid columns outside the viewport.
+========================================================= */
+
+.grid > *,
+.flex > * {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   4. TEXT WRAPPING
+========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+button,
+label,
+span {
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+
+/* =========================================================
+   5. FORM CONTROL RESET
+========================================================= */
+
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+  font: inherit;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+textarea {
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   6. MOBILE FORM ZOOM PROTECTION
+
+   16px prevents mobile Safari from zooming
+   automatically when an input receives focus.
+========================================================= */
+
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+
+/* =========================================================
+   7. MOBILE TAP BEHAVIOR
+========================================================= */
+
+a,
+button,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+button,
+a {
+  touch-action:
+    manipulation;
+}
+
+
+/* =========================================================
+   8. MOBILE TOUCH TARGETS
+========================================================= */
+
+@media (pointer: coarse) {
+  button,
+  a {
+    min-height: 44px;
+  }
+
+  button {
+    user-select: none;
+  }
+}
+
+
+/* =========================================================
+   9. RESPONSIVE SECTION SCROLL OFFSET
+========================================================= */
+
+section[id] {
+  scroll-margin-top: 84px;
+}
+
+@media (min-width: 768px) {
+  section[id] {
+    scroll-margin-top: 92px;
+  }
+}
+
+@media (min-width: 1024px) {
+  section[id] {
+    scroll-margin-top: 105px;
+  }
+}
+
+
+/* =========================================================
+   10. 320PX — EXTRA SMALL DEVICES
+========================================================= */
+
+@media (max-width: 359px) {
+  .site-container {
+    width:
+      calc(
+        100% - 20px
+      );
+  }
+
+  .section-spacing {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .section-title {
+    font-size:
+      clamp(
+        2.35rem,
+        13vw,
+        3rem
+      );
+
+    line-height: 0.96;
+  }
+
+  .section-description {
+    font-size: 0.78rem;
+    line-height: 1.7;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .dark-button {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+    padding-inline: 16px;
+  }
+
+  .premium-tag {
+    font-size: 7px;
+    padding:
+      7px
+      10px;
+  }
+}
+
+
+/* =========================================================
+   11. 360PX — SMALL MOBILE
+========================================================= */
+
+@media (
+  min-width: 360px
+)
+and (
+  max-width: 479px
+) {
+  .site-container {
+    width:
+      calc(
+        100% - 24px
+      );
+  }
+
+  .section-spacing {
+    padding-top: 66px;
+    padding-bottom: 66px;
+  }
+}
+
+
+/* =========================================================
+   12. 480PX — LARGE MOBILE
+========================================================= */
+
+@media (
+  min-width: 480px
+)
+and (
+  max-width: 767px
+) {
+  .site-container {
+    width:
+      calc(
+        100% - 30px
+      );
+  }
+
+  .section-spacing {
+    padding-top: 76px;
+    padding-bottom: 76px;
+  }
+}
+
+
+/* =========================================================
+   13. TABLET
+========================================================= */
+
+@media (
+  min-width: 768px
+)
+and (
+  max-width: 1023px
+) {
+  .site-container {
+    width:
+      min(
+        calc(
+          100% - 40px
+        ),
+        1320px
+      );
+  }
+
+  .section-spacing {
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
+}
+
+
+/* =========================================================
+   14. LAPTOP
+========================================================= */
+
+@media (
+  min-width: 1024px
+)
+and (
+  max-width: 1279px
+) {
+  .site-container {
+    width:
+      min(
+        calc(
+          100% - 64px
+        ),
+        1320px
+      );
+  }
+
+  .section-spacing {
+    padding-top: 115px;
+    padding-bottom: 115px;
+  }
+}
+
+
+/* =========================================================
+   15. DESKTOP
+========================================================= */
+
+@media (
+  min-width: 1280px
+) {
+  .site-container {
+    width:
+      min(
+        calc(
+          100% - 80px
+        ),
+        1320px
+      );
+  }
+
+  .section-spacing {
+    padding-top: 138px;
+    padding-bottom: 138px;
+  }
+}
+
+
+/* =========================================================
+   16. LARGE 1440PX+ MONITORS
+========================================================= */
+
+@media (
+  min-width: 1440px
+) {
+  .site-container {
+    width:
+      min(
+        calc(
+          100% - 96px
+        ),
+        1340px
+      );
+  }
+}
+
+
+/* =========================================================
+   17. ULTRA-WIDE / 1920PX+
+========================================================= */
+
+@media (
+  min-width: 1920px
+) {
+  .site-container {
+    max-width: 1420px;
+  }
+
+  .section-spacing {
+    padding-top: 150px;
+    padding-bottom: 150px;
+  }
+}
+
+
+/* =========================================================
+   18. PREVENT BUTTON TEXT BREAKING BADLY
+========================================================= */
+
+.primary-button,
+.secondary-button,
+.dark-button,
+.icon-button {
+  flex-shrink: 0;
+}
+
+.primary-button,
+.secondary-button,
+.dark-button {
+  text-align: center;
+}
+
+
+/* =========================================================
+   19. BROWSER FRAME PROTECTION
+========================================================= */
+
+.browser-frame {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.browser-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   20. GLASS CARD PROTECTION
+========================================================= */
+
+.glass-card,
+.glass-card-soft,
+.glass-card-premium,
+.floating-card,
+.premium-card,
+.soft-card {
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   21. RESPONSIVE SHADOW REDUCTION
+
+   Large layered shadows can be expensive
+   on mobile GPUs.
+========================================================= */
+
+@media (
+  max-width: 767px
+) {
+  .glass-card,
+  .glass-card-soft,
+  .glass-card-premium,
+  .floating-card,
+  .premium-card {
+    box-shadow:
+      0
+      12px
+      34px
+      rgba(
+        52,
+        35,
+        29,
+        0.07
+      );
+  }
+}
+
+
+/* =========================================================
+   22. REDUCE MOBILE BLUR COST
+========================================================= */
+
+@media (
+  max-width: 767px
+) {
+  .glass-card,
+  .glass-card-soft,
+  .glass-card-premium,
+  .floating-card {
+    backdrop-filter:
+      blur(
+        12px
+      );
+
+    -webkit-backdrop-filter:
+      blur(
+        12px
+      );
+  }
+}
+
+
+/* =========================================================
+   23. HOVER EFFECTS ONLY ON REAL HOVER DEVICES
+
+   Prevent sticky hover states on phones.
+========================================================= */
+
+@media (
+  hover: none
+) {
+  .hover-lift:hover {
+    transform: none;
+  }
+
+  .shine-effect::after {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   24. DESKTOP HOVER
+========================================================= */
+
+@media (
+  hover: hover
+)
+and (
+  pointer: fine
+) {
+  .hover-lift:hover {
+    transform:
+      translateY(
+        -6px
+      );
+  }
+}
+
+
+/* =========================================================
+   25. PREVENT ANIMATION LAYOUT JANK
+========================================================= */
+
+.floating-card,
+.floating-orb {
+  will-change:
+    transform;
+}
+
+
+/* =========================================================
+   26. MARQUEE GPU OPTIMIZATION
+========================================================= */
+
+.marquee-track {
+  transform:
+    translate3d(
+      0,
+      0,
+      0
+    );
+
+  backface-visibility:
+    hidden;
+
+  will-change:
+    transform;
+}
+
+
+/* =========================================================
+   27. REDUCED MOTION ACCESSIBILITY
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  html {
+    scroll-behavior:
+      auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior:
+      auto !important;
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+
+  .marquee-track {
+    animation:
+      none !important;
+
+    transform:
+      none !important;
+  }
+
+  .floating-card,
+  .floating-orb {
+    transform:
+      none !important;
+  }
+}
+
+
+/* =========================================================
+   28. KEYBOARD FOCUS
+========================================================= */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline:
+    2px
+    solid
+    #ff685b;
+
+  outline-offset:
+    3px;
+}
+
+
+/* =========================================================
+   29. IOS SAFE AREA
+========================================================= */
+
+@supports (
+  padding:
+    max(
+      0px
+    )
+) {
+  body {
+    padding-left:
+      env(
+        safe-area-inset-left
+      );
+
+    padding-right:
+      env(
+        safe-area-inset-right
+      );
+  }
+}
+
+
+/* =========================================================
+   30. HIGH DPI IMAGE RENDERING
+========================================================= */
+
+img {
+  image-rendering:
+    auto;
+}
+
+
+/* =========================================================
+   31. LONG URL / EMAIL PROTECTION
+========================================================= */
+
+a,
+input,
+textarea {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   32. SELECT / OPTION SAFETY
+========================================================= */
+
+select {
+  text-overflow:
+    ellipsis;
+}
+
+
+/* =========================================================
+   33. REMOVE MOBILE 300MS CLICK FEEL
+========================================================= */
+
+button,
+a,
+input,
+select {
+  touch-action:
+    manipulation;
+}
+
+
+/* =========================================================
+   34. LANDSCAPE MOBILE
+========================================================= */
+
+@media (
+  max-height: 500px
+)
+and (
+  orientation:
+    landscape
+) {
+  .section-spacing {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
+
+/* =========================================================
+   35. PRINT FALLBACK
+========================================================= */
+
+@media print {
+  nav,
+  .marquee,
+  button {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  section {
+    break-inside: avoid;
+  }
+}
