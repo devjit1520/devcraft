@@ -38,7 +38,7 @@ const projects = [
       "A modern personal finance dashboard designed to help users understand transactions, budgets, goals and financial activity through a clean responsive interface.",
 
     image:
-      "/images/projects/fintrack-pro.jpg",
+      "/public/images/projects/fintrack-pro.jpg.png",
 
     accent: "coral",
 
@@ -80,7 +80,7 @@ const projects = [
       "A modern productivity experience built with vanilla JavaScript featuring task organization, filters, priorities, search, local storage and responsive interactions.",
 
     image:
-      "/images/projects/taskbloom.jpg",
+      "/public/images/projects/taskbloom.jpg.png",
 
     accent: "green",
 
@@ -123,7 +123,7 @@ const projects = [
       "A responsive quiz application focused on interaction, progression and modern interface design with animated feedback and achievement-style elements.",
 
     image:
-      "/images/projects/modern-quiz.jpg",
+      "/public/images/projects/modern-quiz.jpg.png",
 
     accent: "purple",
 

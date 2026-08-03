@@ -3,9 +3,10 @@ import {
 } from "react";
 
 import {
-  AnimatePresence,
   motion,
 } from "framer-motion";
+
+import emailjs from "@emailjs/browser";
 
 import {
   FaArrowRight,
@@ -20,17 +21,30 @@ import {
 } from "react-icons/fa";
 
 /* =========================================================
+   INITIAL FORM
+========================================================= */
+
+const initialFormData = {
+  name: "",
+  email: "",
+  company: "",
+  service: "",
+  budget: "",
+  message: "",
+};
+
+/* =========================================================
    SERVICE OPTIONS
 ========================================================= */
 
 const serviceOptions = [
-  "Landing Page Development",
-  "React Frontend Development",
   "Business Website",
-  "WordPress Website",
+  "Landing Page",
   "Website Redesign",
-  "Responsive Development",
-  "Performance Optimization",
+  "Frontend Development",
+  "React Development",
+  "WordPress Website",
+  "Portfolio Website",
   "Website Maintenance",
   "Other",
 ];
@@ -46,19 +60,6 @@ const budgetOptions = [
   "₹50,000+",
   "Not sure yet",
 ];
-
-/* =========================================================
-   INITIAL FORM DATA
-========================================================= */
-
-const initialFormData = {
-  name: "",
-  email: "",
-  company: "",
-  service: "",
-  budget: "",
-  message: "",
-};
 
 /* =========================================================
    CONTACT
@@ -78,9 +79,30 @@ const Contact = () => {
   ] = useState({});
 
   const [
-    isSubmitted,
-    setIsSubmitted,
+    isSending,
+    setIsSending,
   ] = useState(false);
+
+  const [
+    submitStatus,
+    setSubmitStatus,
+  ] = useState(null);
+
+  /* =======================================================
+     ENV VARIABLES
+  ======================================================= */
+
+  const serviceId =
+    import.meta.env
+      .VITE_EMAILJS_SERVICE_ID;
+
+  const templateId =
+    import.meta.env
+      .VITE_EMAILJS_TEMPLATE_ID;
+
+  const publicKey =
+    import.meta.env
+      .VITE_EMAILJS_PUBLIC_KEY;
 
   /* =======================================================
      INPUT CHANGE
@@ -95,46 +117,36 @@ const Contact = () => {
     } = event.target;
 
     setFormData(
-      (current) => ({
-        ...current,
+      (previous) => ({
+        ...previous,
+
         [name]: value,
       }),
     );
 
-    setIsSubmitted(false);
+    /*
+      Remove the error as soon as
+      the user corrects that field.
+    */
 
     if (errors[name]) {
       setErrors(
-        (current) => ({
-          ...current,
+        (previous) => ({
+          ...previous,
+
           [name]: "",
         }),
       );
     }
-  };
 
-  /* =======================================================
-     BUDGET
-  ======================================================= */
+    /*
+      Hide previous success/error
+      if visitor starts editing again.
+    */
 
-  const handleBudgetSelect = (
-    budget,
-  ) => {
-    setFormData(
-      (current) => ({
-        ...current,
-        budget,
-      }),
-    );
-
-    setIsSubmitted(false);
-
-    if (errors.budget) {
-      setErrors(
-        (current) => ({
-          ...current,
-          budget: "",
-        }),
+    if (submitStatus) {
+      setSubmitStatus(
+        null,
       );
     }
   };
@@ -146,143 +158,252 @@ const Contact = () => {
   const validateForm = () => {
     const newErrors = {};
 
+    /* NAME */
+
     if (
+      !formData.name.trim()
+    ) {
+      newErrors.name =
+        "Please enter your name.";
+    } else if (
       formData.name
         .trim()
         .length < 2
     ) {
       newErrors.name =
-        "Please enter your name.";
+        "Please enter at least 2 characters.";
     }
+
+    /* EMAIL */
+
+    const emailPattern =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (
       !formData.email.trim()
     ) {
       newErrors.email =
         "Please enter your email address.";
-    } else {
-      const emailPattern =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (
-        !emailPattern.test(
-          formData.email,
-        )
-      ) {
-        newErrors.email =
-          "Please enter a valid email address.";
-      }
+    } else if (
+      !emailPattern.test(
+        formData.email.trim(),
+      )
+    ) {
+      newErrors.email =
+        "Please enter a valid email address.";
     }
+
+    /* SERVICE */
 
     if (
       !formData.service
     ) {
       newErrors.service =
-        "Please select a service.";
+        "Please choose a service.";
     }
 
+    /* MESSAGE */
+
     if (
-      !formData.budget
+      !formData.message.trim()
     ) {
-      newErrors.budget =
-        "Please select an approximate budget.";
-    }
-
-    if (
+      newErrors.message =
+        "Please tell me a little about your project.";
+    } else if (
       formData.message
         .trim()
         .length < 20
     ) {
       newErrors.message =
-        "Please add a little more detail about your project.";
+        "Please provide at least 20 characters.";
     }
+
+    setErrors(
+      newErrors,
+    );
 
     return newErrors;
   };
 
   /* =======================================================
-     SUBMIT
+     FOCUS FIRST ERROR
   ======================================================= */
 
-  const handleSubmit = (
+  const focusFirstError = (
+    currentErrors,
+  ) => {
+    const firstError =
+      Object.keys(
+        currentErrors,
+      )[0];
+
+    if (!firstError) {
+      return;
+    }
+
+    const element =
+      document.getElementById(
+        `contact-${firstError}`,
+      );
+
+    element?.focus();
+  };
+
+  /* =======================================================
+     FORM SUBMIT
+  ======================================================= */
+
+  const handleSubmit = async (
     event,
   ) => {
     event.preventDefault();
 
-    const validationErrors =
+    if (isSending) {
+      return;
+    }
+
+    setSubmitStatus(
+      null,
+    );
+
+    const currentErrors =
       validateForm();
 
     if (
       Object.keys(
-        validationErrors,
+        currentErrors,
       ).length > 0
     ) {
-      setErrors(
-        validationErrors,
+      focusFirstError(
+        currentErrors,
       );
-
-      const firstError =
-        Object.keys(
-          validationErrors,
-        )[0];
-
-      document
-        .getElementById(
-          `contact-${firstError}`,
-        )
-        ?.focus();
 
       return;
     }
 
-    /*
-      PHASE 9:
+    /* ===============================================
+       CHECK EMAILJS CONFIGURATION
+    =============================================== */
 
-      Real email delivery will
-      be connected here.
+    if (
+      !serviceId ||
+      !templateId ||
+      !publicKey
+    ) {
+      console.error(
+        "EmailJS configuration is missing.",
+      );
 
-      Right now this only confirms
-      frontend validation.
-    */
+      setSubmitStatus(
+        "error",
+      );
 
-    setErrors({});
+      return;
+    }
 
-    setIsSubmitted(true);
-  };
-
-  /* =======================================================
-     RESET
-  ======================================================= */
-
-  const handleReset = () => {
-    setFormData(
-      initialFormData,
+    setIsSending(
+      true,
     );
 
-    setErrors({});
+    try {
+      /* =============================================
+         TEMPLATE PARAMETERS
 
-    setIsSubmitted(false);
+         These names match the EmailJS template.
+      ============================================= */
+
+      const templateParams = {
+        name:
+          formData.name.trim(),
+
+        email:
+          formData.email.trim(),
+
+        company:
+          formData.company.trim() ||
+          "Not provided",
+
+        service:
+          formData.service,
+
+        budget:
+          formData.budget ||
+          "Not specified",
+
+        message:
+          formData.message.trim(),
+
+        submitted_at:
+          new Date().toLocaleString(
+            "en-IN",
+            {
+              dateStyle:
+                "medium",
+
+              timeStyle:
+                "short",
+            },
+          ),
+
+        page_url:
+          window.location.href,
+      };
+
+      /* =============================================
+         SEND EMAIL
+      ============================================= */
+
+      await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams,
+        {
+          publicKey,
+        },
+      );
+
+      /* =============================================
+         SUCCESS
+      ============================================= */
+
+      setSubmitStatus(
+        "success",
+      );
+
+      setErrors({});
+
+      setFormData(
+        initialFormData,
+      );
+    } catch (error) {
+      console.error(
+        "EMAILJS ERROR:",
+        error,
+      );
+
+      setSubmitStatus(
+        "error",
+      );
+    } finally {
+      setIsSending(
+        false,
+      );
+    }
   };
 
   return (
     <section
       id="contact"
       className="
+        section-spacing
         relative
         overflow-hidden
         bg-[#24201e]
-        py-[72px]
         text-white
-
-        sm:py-[90px]
-
-        lg:py-[115px]
-
-        xl:py-[130px]
       "
     >
       {/* =====================================================
-          BACKGROUND
+          BACKGROUND DECORATION
       ===================================================== */}
 
       <div
@@ -290,197 +411,58 @@ const Contact = () => {
         className="
           pointer-events-none
           absolute
-          inset-0
-          background-grid
-          opacity-[0.08]
-
-          sm:opacity-[0.11]
-        "
-      />
-
-      {/* CORAL GLOW */}
-
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          -right-[160px]
-          -top-[100px]
-          h-[320px]
-          w-[320px]
+          -left-36
+          top-12
+          h-[380px]
+          w-[380px]
           rounded-full
-          bg-[#ff685b]/15
-          blur-[100px]
-
-          sm:h-[440px]
-          sm:w-[440px]
-          sm:blur-[130px]
-
-          xl:h-[520px]
-          xl:w-[520px]
-          xl:blur-[160px]
+          bg-[#ff685b]/[0.09]
+          blur-[110px]
         "
       />
-
-      {/* BLUE GLOW */}
 
       <div
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
-          -bottom-[180px]
-          -left-[170px]
+          -right-28
+          bottom-0
           h-[340px]
           w-[340px]
           rounded-full
-          bg-blue-500/[0.07]
-          blur-[110px]
-
-          sm:h-[450px]
-          sm:w-[450px]
-          sm:blur-[140px]
+          bg-white/[0.035]
+          blur-[100px]
         "
       />
 
-      {/* DESKTOP SPHERE */}
-
-      <motion.div
-        aria-hidden="true"
-        animate={{
-          y: [
-            0,
-            -12,
-            0,
-          ],
-        }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+      <div
         className="
-          pointer-events-none
-          absolute
-          -right-24
-          top-[25%]
-          hidden
-          h-[220px]
-          w-[220px]
-          rounded-full
-          bg-gradient-to-br
-          from-[#ff8976]
-          to-[#ff5f53]
-          opacity-75
-          shadow-[0_40px_90px_rgba(255,104,91,0.20)]
-
-          lg:block
-
-          xl:h-[260px]
-          xl:w-[260px]
+          site-container
+          relative
+          z-10
         "
-      />
-
-      <div className="site-container relative z-10">
-        {/* ===================================================
-            HEADER
-        =================================================== */}
-
+      >
         <div
           className="
             grid
-            gap-8
+            gap-12
 
-            sm:gap-10
+            lg:grid-cols-[0.8fr_1.2fr]
+            lg:gap-16
 
-            lg:grid-cols-[0.58fr_1.42fr]
-            lg:gap-14
-
-            xl:gap-16
+            xl:grid-cols-[0.78fr_1.22fr]
+            xl:gap-20
           "
         >
-          {/* LEFT */}
+          {/* =================================================
+              LEFT
+          ================================================= */}
 
           <motion.div
             initial={{
               opacity: 0,
-              y: 18,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.25,
-            }}
-            transition={{
-              duration: 0.6,
-            }}
-          >
-            <div
-              className="
-                flex
-                items-center
-                gap-3
-              "
-            >
-              <span
-                className="
-                  h-[2px]
-                  w-6
-                  shrink-0
-                  rounded-full
-                  bg-[#ff685b]
-
-                  sm:w-7
-                "
-              />
-
-              <span
-                className="
-                  text-[8px]
-                  font-extrabold
-                  uppercase
-                  tracking-[0.16em]
-                  text-[#ff9388]
-
-                  sm:text-[9px]
-                  sm:tracking-[0.2em]
-                "
-              >
-                Start a Project
-              </span>
-            </div>
-
-            <p
-              className="
-                mt-4
-                max-w-sm
-                text-[12px]
-                leading-6
-                text-white/45
-
-                sm:mt-5
-                sm:text-sm
-                sm:leading-7
-              "
-            >
-              Share your idea,
-              website requirement or
-              redesign challenge and
-              we can figure out the
-              right next step.
-            </p>
-          </motion.div>
-
-          {/* RIGHT */}
-
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 22,
+              y: 24,
             }}
             whileInView={{
               opacity: 1,
@@ -491,1320 +473,787 @@ const Contact = () => {
               amount: 0.2,
             }}
             transition={{
-              duration: 0.7,
+              duration: 0.6,
             }}
           >
-            <h2
-              className="
-                max-w-6xl
-                break-words
-                text-[clamp(3rem,14vw,4.5rem)]
-                font-bold
-                leading-[0.9]
-                tracking-[-0.065em]
-                text-white
-
-                sm:text-[clamp(4rem,10vw,5.8rem)]
-
-                lg:text-[clamp(5rem,6.5vw,7.4rem)]
-                lg:leading-[0.87]
-              "
-            >
-              Have something
-              <br />
-
-              worth{" "}
-
-              <span className="text-[#ff685b]">
-                building?
-              </span>
-            </h2>
+            {/* LABEL */}
 
             <div
               className="
-                mt-6
-                border-t
+                inline-flex
+                items-center
+                gap-2
+                rounded-full
+                border
                 border-white/10
-                pt-6
-
-                sm:mt-8
-                sm:pt-7
+                bg-white/[0.04]
+                px-3
+                py-2
               "
             >
-              <p
+              <span
                 className="
-                  max-w-2xl
-                  text-[12px]
-                  leading-6
-                  text-white/45
+                  h-2
+                  w-2
+                  rounded-full
+                  bg-emerald-400
+                "
+              />
 
-                  sm:text-[15px]
-                  sm:leading-7
+              <span
+                className="
+                  text-[9px]
+                  font-bold
+                  uppercase
+                  tracking-[0.18em]
+                  text-white/60
                 "
               >
-                Tell me where you are
-                now, what you want to
-                build and what the
-                website needs to achieve.
-              </p>
+                Open for enquiries
+              </span>
+            </div>
+
+            {/* HEADING */}
+
+            <h2
+              className="
+                mt-6
+                max-w-[560px]
+                text-[clamp(2.2rem,6vw,4.8rem)]
+                font-black
+                leading-[0.98]
+                tracking-[-0.06em]
+                text-white
+              "
+            >
+              Have a project
+              <span
+                className="
+                  block
+                  text-[#ff685b]
+                "
+              >
+                in mind?
+              </span>
+            </h2>
+
+            <p
+              className="
+                mt-6
+                max-w-[520px]
+                text-[13px]
+                leading-7
+                text-white/48
+
+                sm:text-[14px]
+              "
+            >
+              Tell me what
+              you&apos;re planning.
+              I&apos;ll review your
+              enquiry and get back to
+              you to discuss the right
+              direction for your
+              website.
+            </p>
+
+            {/* =============================================
+                CONTACT BENEFITS
+            ============================================= */}
+
+            <div
+              className="
+                mt-8
+                grid
+                gap-3
+
+                sm:grid-cols-2
+
+                lg:grid-cols-1
+
+                xl:grid-cols-2
+              "
+            >
+              <InfoCard
+                icon={
+                  FaClock
+                }
+                title="Clear communication"
+                text="Project details stay organized."
+              />
+
+              <InfoCard
+                icon={
+                  FaGlobe
+                }
+                title="Remote friendly"
+                text="Work with clients from anywhere."
+              />
+
+              <InfoCard
+                icon={
+                  FaBriefcase
+                }
+                title="Project focused"
+                text="Web design and frontend work."
+              />
+
+              <InfoCard
+                icon={
+                  FaCheck
+                }
+                title="Responsive first"
+                text="Every screen matters."
+              />
             </div>
           </motion.div>
-        </div>
 
-        {/* ===================================================
-            MAIN CONTACT
-        =================================================== */}
-
-        <div
-          className="
-            mt-12
-            grid
-            items-start
-            gap-4
-
-            sm:mt-14
-            sm:gap-5
-
-            lg:mt-16
-
-            xl:grid-cols-[0.7fr_1.3fr]
-          "
-        >
           {/* =================================================
-              INFORMATION PANEL
+              FORM CARD
           ================================================= */}
 
-          <motion.aside
+          <motion.div
             initial={{
               opacity: 0,
-              x: -22,
+              y: 28,
             }}
             whileInView={{
               opacity: 1,
-              x: 0,
+              y: 0,
             }}
             viewport={{
               once: true,
               amount: 0.15,
             }}
             transition={{
-              duration: 0.7,
+              duration: 0.65,
+              delay: 0.08,
             }}
             className="
-              xl:sticky
-              xl:top-[105px]
+              rounded-[26px]
+              border
+              border-white/10
+              bg-white
+              p-4
+              text-[#292929]
+              shadow-[0_35px_100px_rgba(0,0,0,0.20)]
+
+              sm:rounded-[30px]
+              sm:p-6
+
+              lg:p-7
+
+              xl:p-8
             "
           >
+            {/* FORM HEADER */}
+
             <div
               className="
-                relative
-                overflow-hidden
-                rounded-[28px]
-                border
-                border-white/10
-                bg-white/[0.055]
-                p-5
-                shadow-[0_28px_80px_rgba(0,0,0,0.15)]
-                backdrop-blur-[18px]
+                flex
+                flex-col
+                gap-4
+                border-b
+                border-[#eee7e3]
+                pb-6
 
-                sm:rounded-[34px]
-                sm:p-7
-                sm:backdrop-blur-[22px]
-
-                lg:p-8
-
-                xl:rounded-[36px]
+                sm:flex-row
+                sm:items-center
+                sm:justify-between
               "
             >
-              {/* GLOW */}
+              <div>
+                <p
+                  className="
+                    text-[9px]
+                    font-extrabold
+                    uppercase
+                    tracking-[0.18em]
+                    text-[#ff685b]
+                  "
+                >
+                  Start a project
+                </p>
+
+                <h3
+                  className="
+                    mt-2
+                    text-[24px]
+                    font-black
+                    tracking-[-0.04em]
+                    text-[#292929]
+
+                    sm:text-[28px]
+                  "
+                >
+                  Tell me about your
+                  project.
+                </h3>
+              </div>
 
               <div
-                aria-hidden="true"
                 className="
-                  pointer-events-none
-                  absolute
-                  -right-16
-                  -top-16
-                  h-48
-                  w-48
+                  w-fit
                   rounded-full
-                  bg-[#ff685b]/10
-                  blur-[70px]
+                  bg-[#fff0ed]
+                  px-3
+                  py-2
+                  text-[8px]
+                  font-bold
+                  uppercase
+                  tracking-[0.12em]
+                  text-[#ff685b]
                 "
-              />
+              >
+                Secure enquiry
+              </div>
+            </div>
 
-              <div className="relative z-10">
-                {/* TOP */}
+            {/* =================================================
+                SUCCESS MESSAGE
+            ================================================= */}
 
+            {submitStatus ===
+              "success" && (
+              <div
+                role="status"
+                className="
+                  mt-6
+                  rounded-[18px]
+                  border
+                  border-emerald-200
+                  bg-emerald-50
+                  p-5
+                "
+              >
                 <div
                   className="
                     flex
-                    items-center
-                    justify-between
+                    items-start
                     gap-3
                   "
                 >
                   <div
                     className="
                       flex
-                      h-11
-                      w-11
+                      h-10
+                      w-10
                       shrink-0
                       items-center
                       justify-center
-                      rounded-[14px]
-                      bg-[#ff685b]
-                      text-white
-                      shadow-[0_12px_30px_rgba(255,104,91,0.22)]
-
-                      sm:h-14
-                      sm:w-14
-                      sm:rounded-[18px]
+                      rounded-full
+                      bg-emerald-100
+                      text-emerald-600
                     "
                   >
-                    <FaBriefcase
-                      size={17}
+                    <FaCheck
+                      size={12}
                     />
                   </div>
 
-                  <div
-                    className="
-                      flex
-                      shrink-0
-                      items-center
-                      gap-2
-                      rounded-full
-                      border
-                      border-emerald-400/20
-                      bg-emerald-400/[0.08]
-                      px-2.5
-                      py-2
-
-                      sm:px-3
-                    "
-                  >
-                    <span
+                  <div>
+                    <p
                       className="
-                        relative
-                        flex
-                        h-1.5
-                        w-1.5
+                        text-[13px]
+                        font-extrabold
+                        text-emerald-900
                       "
                     >
-                      <span
-                        className="
-                          absolute
-                          inline-flex
-                          h-full
-                          w-full
-                          animate-ping
-                          rounded-full
-                          bg-emerald-400
-                          opacity-50
-                        "
-                      />
+                      Enquiry sent
+                      successfully.
+                    </p>
 
-                      <span
-                        className="
-                          relative
-                          h-1.5
-                          w-1.5
-                          rounded-full
-                          bg-emerald-400
-                        "
-                      />
-                    </span>
-
-                    <span
+                    <p
                       className="
-                        text-[7px]
-                        font-bold
-                        text-emerald-300
-
-                        min-[360px]:text-[8px]
+                        mt-1
+                        text-[11px]
+                        leading-5
+                        text-emerald-700
                       "
                     >
-                      Open for enquiries
-                    </span>
-                  </div>
-                </div>
-
-                {/* COPY */}
-
-                <p
-                  className="
-                    mt-7
-                    text-[8px]
-                    font-extrabold
-                    uppercase
-                    tracking-[0.17em]
-                    text-[#ff9287]
-
-                    sm:mt-8
-                    sm:text-[9px]
-                    sm:tracking-[0.2em]
-                  "
-                >
-                  Project enquiries
-                </p>
-
-                <h3
-                  className="
-                    mt-3
-                    max-w-md
-                    text-[clamp(2.2rem,10vw,3.4rem)]
-                    font-bold
-                    leading-[0.96]
-                    tracking-[-0.055em]
-                    text-white
-
-                    sm:mt-4
-                    sm:text-[clamp(2.9rem,7vw,4rem)]
-
-                    xl:text-[clamp(3rem,3.5vw,4.5rem)]
-                  "
-                >
-                  Let&apos;s understand
-                  your project first.
-                </h3>
-
-                <p
-                  className="
-                    mt-4
-                    max-w-md
-                    text-[11px]
-                    leading-6
-                    text-white/45
-
-                    sm:mt-5
-                    sm:text-sm
-                    sm:leading-7
-                  "
-                >
-                  You don&apos;t need
-                  to have everything
-                  figured out. Share
-                  what you know and
-                  we&apos;ll start
-                  from there.
-                </p>
-
-                {/* ===========================================
-                    INFO ROWS
-                =========================================== */}
-
-                <div
-                  className="
-                    mt-6
-                    border-t
-                    border-white/10
-
-                    sm:mt-7
-                  "
-                >
-                  <InfoRow
-                    icon={FaClock}
-                    label="Project discussion"
-                    value="Clear requirements before development"
-                  />
-
-                  <InfoRow
-                    icon={FaGlobe}
-                    label="Collaboration"
-                    value="Remote project workflow"
-                  />
-
-                  <InfoRow
-                    icon={FaEnvelope}
-                    label="Best suited for"
-                    value="Web design & frontend projects"
-                  />
-                </div>
-
-                {/* ===========================================
-                    WHAT TO INCLUDE
-                =========================================== */}
-
-                <div
-                  className="
-                    mt-6
-                    rounded-[20px]
-                    border
-                    border-white/10
-                    bg-black/[0.12]
-                    p-4
-
-                    sm:mt-7
-                    sm:rounded-[24px]
-                    sm:p-5
-                  "
-                >
-                  <p
-                    className="
-                      text-[7px]
-                      font-extrabold
-                      uppercase
-                      tracking-[0.17em]
-                      text-white/30
-
-                      sm:text-[8px]
-                      sm:tracking-[0.19em]
-                    "
-                  >
-                    Useful details
-                    to include
-                  </p>
-
-                  <div
-                    className="
-                      mt-4
-                      grid
-                      gap-2.5
-
-                      min-[480px]:grid-cols-2
-
-                      xl:grid-cols-1
-                    "
-                  >
-                    <ContactPoint text="What your business does" />
-
-                    <ContactPoint text="What you want to build" />
-
-                    <ContactPoint text="Important pages or features" />
-
-                    <ContactPoint text="Timeline or budget context" />
+                      Thank you for
+                      contacting DevCraft.
+                      I&apos;ll review your
+                      project information
+                      and get back to you.
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
-          </motion.aside>
+            )}
 
-          {/* =================================================
-              FORM OUTER CARD
-          ================================================= */}
+            {/* =================================================
+                ERROR MESSAGE
+            ================================================= */}
 
-          <motion.div
-            initial={{
-              opacity: 0,
-              x: 22,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.1,
-            }}
-            transition={{
-              duration: 0.7,
-            }}
-            className="
-              min-w-0
-              overflow-hidden
-              rounded-[28px]
-              border
-              border-white/12
-              bg-white/[0.07]
-              p-1.5
-              shadow-[0_30px_90px_rgba(0,0,0,0.16)]
-              backdrop-blur-[18px]
+            {submitStatus ===
+              "error" && (
+              <div
+                role="alert"
+                className="
+                  mt-6
+                  rounded-[18px]
+                  border
+                  border-red-200
+                  bg-red-50
+                  p-5
+                "
+              >
+                <p
+                  className="
+                    text-[12px]
+                    font-extrabold
+                    text-red-700
+                  "
+                >
+                  Your enquiry could not
+                  be sent.
+                </p>
 
-              sm:rounded-[34px]
-              sm:p-2
-              sm:backdrop-blur-[24px]
+                <p
+                  className="
+                    mt-1
+                    text-[11px]
+                    leading-5
+                    text-red-600
+                  "
+                >
+                  Please try again in a
+                  moment.
+                </p>
+              </div>
+            )}
 
-              xl:rounded-[38px]
-            "
-          >
-            <div
+            {/* =================================================
+                FORM
+            ================================================= */}
+
+            <form
+              onSubmit={
+                handleSubmit
+              }
+              noValidate
               className="
-                overflow-hidden
-                rounded-[23px]
-                bg-[#fffdfc]
-                text-[#292929]
-
-                sm:rounded-[28px]
-
-                xl:rounded-[32px]
+                mt-6
               "
             >
-              <AnimatePresence
-                mode="wait"
+              {/* =============================================
+                  NAME + EMAIL
+              ============================================= */}
+
+              <div
+                className="
+                  grid
+                  gap-4
+
+                  md:grid-cols-2
+                "
               >
-                {isSubmitted ? (
-                  <SuccessState
-                    key="success"
-                    onReset={
-                      handleReset
+                <FormField
+                  id="contact-name"
+                  label="Your name"
+                  icon={
+                    FaUser
+                  }
+                  required
+                  error={
+                    errors.name
+                  }
+                >
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    value={
+                      formData.name
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    placeholder="Your full name"
+                    className={
+                      inputClasses(
+                        errors.name,
+                      )
                     }
                   />
-                ) : (
-                  <motion.form
-                    key="form"
-                    initial={{
-                      opacity: 0,
-                    }}
-                    animate={{
-                      opacity: 1,
-                    }}
-                    exit={{
-                      opacity: 0,
-                    }}
-                    transition={{
-                      duration: 0.25,
-                    }}
-                    onSubmit={
-                      handleSubmit
+                </FormField>
+
+                <FormField
+                  id="contact-email"
+                  label="Email address"
+                  icon={
+                    FaEnvelope
+                  }
+                  required
+                  error={
+                    errors.email
+                  }
+                >
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    value={
+                      formData.email
                     }
-                    noValidate
+                    onChange={
+                      handleChange
+                    }
+                    placeholder="you@example.com"
+                    className={
+                      inputClasses(
+                        errors.email,
+                      )
+                    }
+                  />
+                </FormField>
+              </div>
+
+              {/* =============================================
+                  COMPANY + SERVICE
+              ============================================= */}
+
+              <div
+                className="
+                  mt-4
+                  grid
+                  gap-4
+
+                  md:grid-cols-2
+                "
+              >
+                <FormField
+                  id="contact-company"
+                  label="Company"
+                  icon={
+                    FaBuilding
+                  }
+                  error={
+                    errors.company
+                  }
+                >
+                  <input
+                    id="contact-company"
+                    name="company"
+                    type="text"
+                    autoComplete="organization"
+                    value={
+                      formData.company
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    placeholder="Company name (optional)"
+                    className={
+                      inputClasses(
+                        errors.company,
+                      )
+                    }
+                  />
+                </FormField>
+
+                <FormField
+                  id="contact-service"
+                  label="Service"
+                  icon={
+                    FaBriefcase
+                  }
+                  required
+                  error={
+                    errors.service
+                  }
+                >
+                  <select
+                    id="contact-service"
+                    name="service"
+                    value={
+                      formData.service
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    className={
+                      inputClasses(
+                        errors.service,
+                      )
+                    }
+                  >
+                    <option value="">
+                      Select a service
+                    </option>
+
+                    {serviceOptions.map(
+                      (
+                        service,
+                      ) => (
+                        <option
+                          key={
+                            service
+                          }
+                          value={
+                            service
+                          }
+                        >
+                          {service}
+                        </option>
+                      ),
+                    )}
+                  </select>
+                </FormField>
+              </div>
+
+              {/* =============================================
+                  BUDGET
+              ============================================= */}
+
+              <div
+                className="
+                  mt-5
+                "
+              >
+                <p
+                  className="
+                    text-[10px]
+                    font-extrabold
+                    uppercase
+                    tracking-[0.12em]
+                    text-[#817975]
+                  "
+                >
+                  Approximate budget
+
+                  <span
                     className="
-                      p-4
-
-                      min-[360px]:p-5
-
-                      sm:p-7
-
-                      md:p-8
-
-                      lg:p-9
-
-                      xl:p-11
+                      ml-1
+                      font-medium
+                      normal-case
+                      tracking-normal
+                      text-[#aaa29d]
                     "
                   >
-                    {/* =======================================
-                        FORM HEADER
-                    ======================================= */}
+                    (optional)
+                  </span>
+                </p>
 
-                    <div
-                      className="
-                        flex
-                        flex-col
-                        gap-4
-                        border-b
-                        border-[#eee7e3]
-                        pb-6
+                <div
+                  className="
+                    mt-3
+                    flex
+                    flex-wrap
+                    gap-2
+                  "
+                >
+                  {budgetOptions.map(
+                    (
+                      option,
+                    ) => {
+                      const selected =
+                        formData.budget ===
+                        option;
 
-                        sm:gap-5
-                        sm:pb-7
-
-                        md:flex-row
-                        md:items-end
-                        md:justify-between
-                      "
-                    >
-                      <div>
-                        <p
-                          className="
-                            text-[8px]
-                            font-extrabold
-                            uppercase
-                            tracking-[0.17em]
-                            text-[#ff685b]
-
-                            sm:text-[9px]
-                            sm:tracking-[0.2em]
-                          "
-                        >
-                          Project brief
-                        </p>
-
-                        <h3
-                          className="
-                            mt-3
-                            max-w-2xl
-                            text-[clamp(2.25rem,10vw,3.4rem)]
-                            font-bold
-                            leading-[0.96]
-                            tracking-[-0.055em]
-                            text-[#292929]
-
-                            sm:text-[clamp(3rem,7vw,4.2rem)]
-
-                            lg:text-[clamp(3.4rem,4vw,4.8rem)]
-                          "
-                        >
-                          Tell me what
-                          you want to build.
-                        </h3>
-                      </div>
-
-                      <div
-                        className="
-                          w-fit
-                          shrink-0
-                          rounded-full
-                          border
-                          border-[#eee7e3]
-                          bg-[#faf7f5]
-                          px-3
-                          py-2
-                        "
-                      >
-                        <span
-                          className="
-                            text-[7px]
-                            font-bold
-                            uppercase
-                            tracking-[0.13em]
-                            text-[#9f9792]
-
-                            sm:text-[8px]
-                            sm:tracking-[0.15em]
-                          "
-                        >
-                          About 2–3 minutes
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* =======================================
-                        PERSONAL FIELDS
-                    ======================================= */}
-
-                    <div
-                      className="
-                        mt-7
-                        grid
-                        gap-5
-
-                        md:grid-cols-2
-
-                        sm:mt-8
-                      "
-                    >
-                      <FormField
-                        label="Your Name"
-                        htmlFor="contact-name"
-                        required
-                        error={
-                          errors.name
-                        }
-                      >
-                        <InputWrapper
-                          icon={FaUser}
-                          error={
-                            Boolean(
-                              errors.name,
-                            )
+                      return (
+                        <button
+                          key={
+                            option
                           }
-                        >
-                          <input
-                            id="contact-name"
-                            type="text"
-                            name="name"
-                            value={
-                              formData.name
-                            }
-                            onChange={
-                              handleChange
-                            }
-                            placeholder="Your full name"
-                            autoComplete="name"
-                            aria-invalid={
-                              Boolean(
-                                errors.name,
-                              )
-                            }
-                            aria-describedby={
-                              errors.name
-                                ? "contact-name-error"
-                                : undefined
-                            }
-                            className="
-                              h-full
-                              w-full
-                              bg-transparent
-                              pl-11
-                              pr-3
-                              text-[12px]
-                              text-[#292929]
-                              outline-none
-                              placeholder:text-[#aaa29d]
-
-                              sm:pl-12
-                              sm:pr-4
-                              sm:text-sm
-                            "
-                          />
-                        </InputWrapper>
-                      </FormField>
-
-                      <FormField
-                        label="Email Address"
-                        htmlFor="contact-email"
-                        required
-                        error={
-                          errors.email
-                        }
-                      >
-                        <InputWrapper
-                          icon={
-                            FaEnvelope
-                          }
-                          error={
-                            Boolean(
-                              errors.email,
-                            )
-                          }
-                        >
-                          <input
-                            id="contact-email"
-                            type="email"
-                            name="email"
-                            value={
-                              formData.email
-                            }
-                            onChange={
-                              handleChange
-                            }
-                            placeholder="you@example.com"
-                            autoComplete="email"
-                            aria-invalid={
-                              Boolean(
-                                errors.email,
-                              )
-                            }
-                            aria-describedby={
-                              errors.email
-                                ? "contact-email-error"
-                                : undefined
-                            }
-                            className="
-                              h-full
-                              w-full
-                              bg-transparent
-                              pl-11
-                              pr-3
-                              text-[12px]
-                              text-[#292929]
-                              outline-none
-                              placeholder:text-[#aaa29d]
-
-                              sm:pl-12
-                              sm:pr-4
-                              sm:text-sm
-                            "
-                          />
-                        </InputWrapper>
-                      </FormField>
-
-                      <FormField
-                        label="Company / Brand"
-                        htmlFor="contact-company"
-                      >
-                        <InputWrapper
-                          icon={
-                            FaBuilding
-                          }
-                        >
-                          <input
-                            id="contact-company"
-                            type="text"
-                            name="company"
-                            value={
-                              formData.company
-                            }
-                            onChange={
-                              handleChange
-                            }
-                            placeholder="Optional"
-                            autoComplete="organization"
-                            className="
-                              h-full
-                              w-full
-                              bg-transparent
-                              pl-11
-                              pr-3
-                              text-[12px]
-                              text-[#292929]
-                              outline-none
-                              placeholder:text-[#aaa29d]
-
-                              sm:pl-12
-                              sm:pr-4
-                              sm:text-sm
-                            "
-                          />
-                        </InputWrapper>
-                      </FormField>
-
-                      <FormField
-                        label="Required Service"
-                        htmlFor="contact-service"
-                        required
-                        error={
-                          errors.service
-                        }
-                      >
-                        <div
-                          className={`
-                            relative
-                            min-h-[52px]
-                            overflow-hidden
-                            rounded-[15px]
-                            border
-                            bg-[#fffaf8]
-                            transition-all
-                            duration-300
-                            focus-within:border-[#ff685b]
-                            focus-within:bg-white
-                            focus-within:shadow-[0_0_0_4px_rgba(255,104,91,0.08)]
-
-                            sm:min-h-[56px]
-                            sm:rounded-[16px]
-
-                            ${
-                              errors.service
-                                ? "border-red-300"
-                                : "border-[#e8dfda]"
-                            }
-                          `}
-                        >
-                          <FaBriefcase
-                            size={11}
-                            className="
-                              pointer-events-none
-                              absolute
-                              left-4
-                              top-1/2
-                              -translate-y-1/2
-                              text-[#aaa29d]
-                            "
-                          />
-
-                          <select
-                            id="contact-service"
-                            name="service"
-                            value={
-                              formData.service
-                            }
-                            onChange={
-                              handleChange
-                            }
-                            aria-invalid={
-                              Boolean(
-                                errors.service,
-                              )
-                            }
-                            aria-describedby={
-                              errors.service
-                                ? "contact-service-error"
-                                : undefined
-                            }
-                            className="
-                              h-[52px]
-                              w-full
-                              cursor-pointer
-                              appearance-none
-                              bg-transparent
-                              pl-11
-                              pr-9
-                              text-[12px]
-                              text-[#4f4844]
-                              outline-none
-
-                              sm:h-[56px]
-                              sm:pl-12
-                              sm:pr-10
-                              sm:text-sm
-                            "
-                          >
-                            <option value="">
-                              Select a service
-                            </option>
-
-                            {serviceOptions.map(
+                          type="button"
+                          onClick={() => {
+                            setFormData(
                               (
-                                service,
-                              ) => (
-                                <option
-                                  key={
-                                    service
-                                  }
-                                  value={
-                                    service
-                                  }
-                                >
-                                  {
-                                    service
-                                  }
-                                </option>
-                              ),
-                            )}
-                          </select>
+                                previous,
+                              ) => ({
+                                ...previous,
 
-                          <span
-                            aria-hidden="true"
-                            className="
-                              pointer-events-none
-                              absolute
-                              right-4
-                              top-1/2
-                              -translate-y-1/2
-                              text-[9px]
-                              text-[#aaa29d]
-                            "
-                          >
-                            ▼
-                          </span>
-                        </div>
-                      </FormField>
-                    </div>
-
-                    {/* =======================================
-                        BUDGET
-                    ======================================= */}
-
-                    <div
-                      className="
-                        mt-7
-
-                        sm:mt-8
-                      "
-                    >
-                      <FormField
-                        label="Approximate Budget"
-                        required
-                        error={
-                          errors.budget
-                        }
-                      >
-                        <div
-                          id="contact-budget"
-                          className="
-                            grid
-                            grid-cols-1
-                            gap-2
-
-                            min-[390px]:grid-cols-2
-
-                            sm:grid-cols-3
-
-                            lg:grid-cols-2
-
-                            xl:grid-cols-5
-                          "
-                        >
-                          {budgetOptions.map(
-                            (
-                              budget,
-                            ) => {
-                              const isActive =
-                                formData.budget ===
-                                budget;
-
-                              return (
-                                <button
-                                  key={
-                                    budget
-                                  }
-                                  type="button"
-                                  onClick={() =>
-                                    handleBudgetSelect(
-                                      budget,
-                                    )
-                                  }
-                                  aria-pressed={
-                                    isActive
-                                  }
-                                  className={`
-                                    relative
-                                    min-h-[48px]
-                                    rounded-[14px]
-                                    border
-                                    px-3
-                                    py-2.5
-                                    text-[9px]
-                                    font-bold
-                                    leading-4
-                                    transition-all
-                                    duration-300
-
-                                    sm:min-h-[52px]
-                                    sm:rounded-[15px]
-                                    sm:text-[10px]
-
-                                    ${
-                                      isActive
-                                        ? `
-                                          border-[#ff685b]
-                                          bg-[#ff685b]
-                                          text-white
-                                          shadow-[0_10px_24px_rgba(255,104,91,0.17)]
-                                        `
-                                        : `
-                                          border-[#e8dfda]
-                                          bg-[#fffaf8]
-                                          text-[#746d69]
-                                          hover:-translate-y-0.5
-                                          hover:border-[#ffc7c0]
-                                          hover:bg-[#fff0ed]
-                                          hover:text-[#ff685b]
-                                        `
-                                    }
-                                  `}
-                                >
-                                  {
-                                    budget
-                                  }
-
-                                  {isActive && (
-                                    <span
-                                      className="
-                                        absolute
-                                        right-2
-                                        top-2
-                                        flex
-                                        h-4
-                                        w-4
-                                        items-center
-                                        justify-center
-                                        rounded-full
-                                        bg-white
-                                        text-[#ff685b]
-                                      "
-                                    >
-                                      <FaCheck
-                                        size={6}
-                                      />
-                                    </span>
-                                  )}
-                                </button>
-                              );
-                            },
-                          )}
-                        </div>
-                      </FormField>
-                    </div>
-
-                    {/* =======================================
-                        MESSAGE
-                    ======================================= */}
-
-                    <div
-                      className="
-                        mt-7
-
-                        sm:mt-8
-                      "
-                    >
-                      <FormField
-                        label="Tell Me About The Project"
-                        htmlFor="contact-message"
-                        required
-                        error={
-                          errors.message
-                        }
-                      >
-                        <div
+                                budget:
+                                  previous.budget ===
+                                  option
+                                    ? ""
+                                    : option,
+                              }),
+                            );
+                          }}
                           className={`
-                            relative
-                            overflow-hidden
-                            rounded-[17px]
+                            rounded-full
                             border
-                            bg-[#fffaf8]
+                            px-3.5
+                            py-2.5
+                            text-[9px]
+                            font-bold
                             transition-all
                             duration-300
-                            focus-within:border-[#ff685b]
-                            focus-within:bg-white
-                            focus-within:shadow-[0_0_0_4px_rgba(255,104,91,0.08)]
-
-                            sm:rounded-[18px]
 
                             ${
-                              errors.message
-                                ? "border-red-300"
-                                : "border-[#e8dfda]"
+                              selected
+                                ? `
+                                  border-[#ff685b]
+                                  bg-[#ff685b]
+                                  text-white
+                                `
+                                : `
+                                  border-[#eae3df]
+                                  bg-[#faf8f7]
+                                  text-[#776f6a]
+                                  hover:border-[#ffc3bc]
+                                  hover:bg-[#fff0ed]
+                                  hover:text-[#ff685b]
+                                `
                             }
                           `}
                         >
-                          <textarea
-                            id="contact-message"
-                            name="message"
-                            value={
-                              formData.message
-                            }
-                            onChange={
-                              handleChange
-                            }
-                            placeholder="Tell me about your business, what you want to build, important pages or features, and what you want the website to achieve..."
-                            rows={7}
-                            aria-invalid={
-                              Boolean(
-                                errors.message,
-                              )
-                            }
-                            aria-describedby={
-                              errors.message
-                                ? "contact-message-error"
-                                : "contact-message-count"
-                            }
-                            className="
-                              min-h-[170px]
-                              w-full
-                              resize-y
-                              bg-transparent
-                              p-3.5
-                              pb-9
-                              text-[12px]
-                              leading-6
-                              text-[#292929]
-                              outline-none
-                              placeholder:text-[#aaa29d]
+                          {option}
+                        </button>
+                      );
+                    },
+                  )}
+                </div>
+              </div>
 
-                              sm:min-h-[190px]
-                              sm:p-4
-                              sm:pb-10
-                              sm:text-sm
-                              sm:leading-7
-                            "
-                          />
+              {/* =============================================
+                  MESSAGE
+              ============================================= */}
 
-                          <span
-                            id="contact-message-count"
-                            className="
-                              pointer-events-none
-                              absolute
-                              bottom-3
-                              right-3
-                              text-[7px]
-                              font-bold
-                              text-[#b5ada8]
+              <div
+                className="
+                  mt-5
+                "
+              >
+                <FormField
+                  id="contact-message"
+                  label="Project details"
+                  required
+                  error={
+                    errors.message
+                  }
+                >
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows={6}
+                    value={
+                      formData.message
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    placeholder="Tell me about your business, the website you need, your goals, preferred features or anything else that would help me understand the project."
+                    className={`
+                      ${inputClasses(
+                        errors.message,
+                      )}
 
-                              sm:right-4
-                              sm:text-[8px]
-                            "
-                          >
-                            {
-                              formData
-                                .message
-                                .length
-                            }{" "}
-                            characters
-                          </span>
-                        </div>
-                      </FormField>
-                    </div>
+                      min-h-[150px]
+                      resize-y
+                      py-4
+                      leading-6
+                    `}
+                  />
+                </FormField>
+              </div>
 
-                    {/* =======================================
-                        FORM FOOTER
-                    ======================================= */}
+              {/* =============================================
+                  SUBMIT
+              ============================================= */}
 
-                    <div
-                      className="
-                        mt-7
-                        flex
-                        flex-col
-                        gap-5
-                        border-t
-                        border-[#eee7e3]
-                        pt-6
+              <div
+                className="
+                  mt-6
+                  flex
+                  flex-col
+                  gap-4
 
-                        sm:mt-8
-                        sm:pt-7
+                  sm:flex-row
+                  sm:items-center
+                  sm:justify-between
+                "
+              >
+                <p
+                  className="
+                    max-w-[360px]
+                    text-[9px]
+                    leading-5
+                    text-[#9c938e]
+                  "
+                >
+                  By submitting this
+                  form, you&apos;re
+                  sharing your project
+                  details so I can
+                  respond to your
+                  enquiry.
+                </p>
 
-                        lg:flex-row
-                        lg:items-center
-                        lg:justify-between
-                        lg:gap-8
-                      "
-                    >
-                      <div
+                <button
+                  type="submit"
+                  disabled={
+                    isSending
+                  }
+                  className="
+                    group
+                    inline-flex
+                    min-h-[52px]
+                    shrink-0
+                    items-center
+                    justify-center
+                    gap-3
+                    rounded-full
+                    bg-[#ff685b]
+                    px-6
+                    text-[10px]
+                    font-extrabold
+                    text-white
+                    shadow-[0_12px_30px_rgba(255,104,91,0.22)]
+                    transition-all
+                    duration-300
+                    hover:-translate-y-0.5
+                    hover:bg-[#f45448]
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
+
+                    sm:min-w-[170px]
+                  "
+                >
+                  {isSending ? (
+                    <>
+                      <span
                         className="
-                          flex
-                          max-w-md
-                          items-start
-                          gap-3
-                        "
-                      >
-                        <span
-                          className="
-                            mt-0.5
-                            flex
-                            h-6
-                            w-6
-                            shrink-0
-                            items-center
-                            justify-center
-                            rounded-full
-                            bg-[#effaf3]
-                            text-[#35a56b]
-                          "
-                        >
-                          <FaCheck
-                            size={7}
-                          />
-                        </span>
-
-                        <p
-                          className="
-                            text-[9px]
-                            leading-5
-                            text-[#8b837e]
-
-                            sm:text-[10px]
-                          "
-                        >
-                          Required fields are
-                          marked with *. Your
-                          information is used
-                          only to understand
-                          your project enquiry.
-                        </p>
-                      </div>
-
-                      <button
-                        type="submit"
-                        className="
-                          group
-                          relative
-                          inline-flex
-                          min-h-[52px]
-                          w-full
-                          shrink-0
-                          items-center
-                          justify-center
-                          gap-3
-                          overflow-hidden
+                          h-4
+                          w-4
+                          animate-spin
                           rounded-full
-                          bg-[#ff685b]
-                          px-5
-                          text-[10px]
-                          font-bold
-                          text-white
-                          shadow-[0_12px_30px_rgba(255,104,91,0.20)]
-                          transition-all
-                          duration-300
-                          hover:-translate-y-1
-                          hover:bg-[#292929]
-
-                          sm:min-h-[56px]
-                          sm:w-fit
-                          sm:px-7
-                          sm:text-[11px]
+                          border-2
+                          border-white/30
+                          border-t-white
                         "
-                      >
-                        <span
-                          aria-hidden="true"
-                          className="
-                            pointer-events-none
-                            absolute
-                            inset-y-0
-                            -left-[70%]
-                            w-[42%]
-                            rotate-12
-                            bg-gradient-to-r
-                            from-transparent
-                            via-white/40
-                            to-transparent
-                            transition-all
-                            duration-700
-                            group-hover:left-[130%]
-                          "
-                        />
+                      />
 
-                        <FaPaperPlane
-                          size={10}
-                          className="
-                            relative
-                            z-10
-                          "
-                        />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <FaPaperPlane
+                        size={10}
+                      />
 
-                        <span
-                          className="
-                            relative
-                            z-10
-                          "
-                        >
-                          Submit Project Brief
-                        </span>
+                      Send enquiry
 
-                        <FaArrowRight
-                          size={9}
-                          className="
-                            relative
-                            z-10
-                            transition-transform
-                            duration-300
-                            group-hover:translate-x-1
-                          "
-                        />
-                      </button>
-                    </div>
-                  </motion.form>
-                )}
-              </AnimatePresence>
-            </div>
+                      <FaArrowRight
+                        size={8}
+                        className="
+                          transition-transform
+                          duration-300
+                          group-hover:translate-x-1
+                        "
+                      />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
           </motion.div>
         </div>
-
-        {/* ===================================================
-            BOTTOM LINE
-        =================================================== */}
-
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 18,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.65,
-          }}
-          className="
-            mt-10
-            flex
-            flex-col
-            gap-3
-            border-t
-            border-white/10
-            pt-6
-
-            sm:mt-12
-            sm:flex-row
-            sm:items-center
-            sm:justify-between
-            sm:gap-6
-            sm:pt-7
-          "
-        >
-          <p
-            className="
-              text-[7px]
-              font-bold
-              uppercase
-              tracking-[0.14em]
-              text-white/25
-
-              sm:text-[8px]
-              sm:tracking-[0.17em]
-            "
-          >
-            Web Design • Frontend Development • Responsive UI
-          </p>
-
-          <p
-            className="
-              text-[9px]
-              font-semibold
-              leading-5
-              text-white/35
-
-              sm:text-[10px]
-            "
-          >
-            Every project starts with
-            understanding the problem.
-          </p>
-        </motion.div>
       </div>
     </section>
   );
@@ -1815,40 +1264,43 @@ const Contact = () => {
 ========================================================= */
 
 const FormField = ({
+  id,
   label,
-  htmlFor,
+  icon: Icon,
   required = false,
   error,
   children,
 }) => {
-  const errorId =
-    htmlFor
-      ? `${htmlFor}-error`
-      : undefined;
-
   return (
     <div>
       <label
-        htmlFor={htmlFor}
+        htmlFor={id}
         className="
           mb-2.5
-          block
-          text-[8px]
+          flex
+          items-center
+          gap-2
+          text-[10px]
           font-extrabold
           uppercase
-          tracking-[0.14em]
-          text-[#77706c]
-
-          sm:text-[9px]
-          sm:tracking-[0.16em]
+          tracking-[0.12em]
+          text-[#817975]
         "
       >
+        {Icon && (
+          <Icon
+            size={10}
+            className="
+              text-[#ff685b]
+            "
+          />
+        )}
+
         {label}
 
         {required && (
           <span
             className="
-              ml-1
               text-[#ff685b]
             "
           >
@@ -1859,488 +1311,129 @@ const FormField = ({
 
       {children}
 
-      <AnimatePresence>
-        {error && (
-          <motion.p
-            id={errorId}
-            initial={{
-              opacity: 0,
-              y: -3,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            exit={{
-              opacity: 0,
-            }}
-            className="
-              mt-2
-              text-[9px]
-              font-semibold
-              leading-4
-              text-red-500
-
-              sm:text-[10px]
-            "
-          >
-            {error}
-          </motion.p>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
-
-/* =========================================================
-   INPUT WRAPPER
-========================================================= */
-
-const InputWrapper = ({
-  icon: Icon,
-  error = false,
-  children,
-}) => {
-  return (
-    <div
-      className={`
-        relative
-        h-[52px]
-        overflow-hidden
-        rounded-[15px]
-        border
-        bg-[#fffaf8]
-        transition-all
-        duration-300
-        focus-within:border-[#ff685b]
-        focus-within:bg-white
-        focus-within:shadow-[0_0_0_4px_rgba(255,104,91,0.08)]
-
-        sm:h-[56px]
-        sm:rounded-[16px]
-
-        ${
-          error
-            ? "border-red-300"
-            : "border-[#e8dfda]"
-        }
-      `}
-    >
-      <Icon
-        size={11}
-        className="
-          pointer-events-none
-          absolute
-          left-4
-          top-1/2
-          -translate-y-1/2
-          text-[#aaa29d]
-
-          sm:text-[12px]
-        "
-      />
-
-      {children}
-    </div>
-  );
-};
-
-/* =========================================================
-   INFO ROW
-========================================================= */
-
-const InfoRow = ({
-  icon: Icon,
-  label,
-  value,
-}) => {
-  return (
-    <div
-      className="
-        grid
-        grid-cols-[38px_1fr]
-        gap-3
-        border-b
-        border-white/10
-        py-4
-
-        sm:grid-cols-[44px_1fr]
-        sm:gap-4
-        sm:py-5
-      "
-    >
-      <div
-        className="
-          flex
-          h-9
-          w-9
-          items-center
-          justify-center
-          rounded-[12px]
-          border
-          border-white/10
-          bg-white/[0.05]
-          text-[#ff9186]
-
-          sm:h-11
-          sm:w-11
-          sm:rounded-[14px]
-        "
-      >
-        <Icon
-          size={11}
-        />
-      </div>
-
-      <div className="min-w-0">
+      {error && (
         <p
           className="
-            text-[7px]
-            font-extrabold
-            uppercase
-            tracking-[0.14em]
-            text-white/30
-
-            sm:text-[8px]
-            sm:tracking-[0.16em]
-          "
-        >
-          {label}
-        </p>
-
-        <p
-          className="
-            mt-1
+            mt-2
             text-[10px]
             font-semibold
-            leading-5
-            text-white/65
-
-            sm:mt-1.5
-            sm:text-[11px]
+            text-red-500
           "
         >
-          {value}
+          {error}
         </p>
-      </div>
+      )}
     </div>
   );
 };
 
 /* =========================================================
-   CONTACT POINT
+   INPUT CLASSES
 ========================================================= */
 
-const ContactPoint = ({
+const inputClasses = (
+  error,
+) => `
+  w-full
+  rounded-[14px]
+  border
+  bg-[#faf8f7]
+  px-4
+  py-3.5
+  text-[12px]
+  font-medium
+  text-[#292929]
+  outline-none
+  transition-all
+  duration-300
+  placeholder:text-[#b7afa9]
+
+  focus:bg-white
+  focus:ring-4
+  focus:ring-[#ff685b]/[0.07]
+
+  ${
+    error
+      ? `
+        border-red-300
+        focus:border-red-400
+      `
+      : `
+        border-[#eae3df]
+        focus:border-[#ff9a90]
+      `
+  }
+`;
+
+/* =========================================================
+   INFORMATION CARD
+========================================================= */
+
+const InfoCard = ({
+  icon: Icon,
+  title,
   text,
 }) => {
   return (
     <div
       className="
-        flex
-        min-w-0
-        items-center
-        gap-2.5
+        rounded-[18px]
+        border
+        border-white/[0.07]
+        bg-white/[0.035]
+        p-4
+        backdrop-blur-sm
       "
     >
-      <span
+      <div
         className="
           flex
-          h-5
-          w-5
-          shrink-0
-          items-center
-          justify-center
-          rounded-full
-          bg-[#ff685b]/15
-          text-[#ff9388]
+          items-start
+          gap-3
         "
       >
-        <FaCheck
-          size={6}
-        />
-      </span>
-
-      <span
-        className="
-          text-[9px]
-          font-semibold
-          leading-5
-          text-white/50
-
-          sm:text-[10px]
-        "
-      >
-        {text}
-      </span>
-    </div>
-  );
-};
-
-/* =========================================================
-   SUCCESS STATE
-========================================================= */
-
-const SuccessState = ({
-  onReset,
-}) => {
-  return (
-    <motion.div
-      initial={{
-        opacity: 0,
-        y: 18,
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-      transition={{
-        duration: 0.4,
-      }}
-      role="status"
-      aria-live="polite"
-      className="
-        relative
-        flex
-        min-h-[520px]
-        items-center
-        justify-center
-        overflow-hidden
-        p-5
-        text-center
-
-        sm:min-h-[620px]
-        sm:p-8
-
-        lg:min-h-[680px]
-        lg:p-10
-
-        xl:min-h-[720px]
-        xl:p-12
-      "
-    >
-      {/* GLOW */}
-
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-1/2
-          h-[280px]
-          w-[280px]
-          -translate-x-1/2
-          -translate-y-1/2
-          rounded-full
-          bg-[#ff685b]/[0.07]
-          blur-[80px]
-
-          sm:h-[400px]
-          sm:w-[400px]
-          sm:blur-[100px]
-        "
-      />
-
-      <div
-        className="
-          relative
-          z-10
-          mx-auto
-          max-w-xl
-        "
-      >
-        <motion.div
-          initial={{
-            scale: 0.75,
-            rotate: -12,
-          }}
-          animate={{
-            scale: 1,
-            rotate: 0,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 260,
-            damping: 18,
-          }}
-          className="
-            mx-auto
-            flex
-            h-16
-            w-16
-            items-center
-            justify-center
-            rounded-full
-            bg-[#effaf3]
-            text-[#35a56b]
-            shadow-[0_15px_38px_rgba(53,165,107,0.10)]
-
-            sm:h-20
-            sm:w-20
-          "
-        >
-          <FaCheck
-            size={20}
-          />
-        </motion.div>
-
-        <p
-          className="
-            mt-7
-            text-[8px]
-            font-extrabold
-            uppercase
-            tracking-[0.17em]
-            text-[#ff685b]
-
-            sm:mt-8
-            sm:text-[9px]
-            sm:tracking-[0.2em]
-          "
-        >
-          Project brief completed
-        </p>
-
-        <h3
-          className="
-            mt-3
-            text-[clamp(2.35rem,11vw,3.6rem)]
-            font-bold
-            leading-[0.94]
-            tracking-[-0.06em]
-            text-[#292929]
-
-            sm:mt-4
-            sm:text-[clamp(3.2rem,7vw,4.6rem)]
-
-            lg:text-[clamp(3.8rem,4.5vw,5.4rem)]
-          "
-        >
-          Your project details
-          are ready.
-        </h3>
-
-        <p
-          className="
-            mx-auto
-            mt-5
-            max-w-lg
-            text-[11px]
-            leading-6
-            text-[#77706c]
-
-            sm:mt-6
-            sm:text-sm
-            sm:leading-7
-          "
-        >
-          The form has passed
-          frontend validation.
-          Email delivery is not
-          connected yet, so nothing
-          has been sent.
-        </p>
-
         <div
           className="
-            mx-auto
-            mt-6
-            max-w-md
-            rounded-[20px]
-            border
-            border-[#eee7e3]
-            bg-[#faf7f5]
-            p-4
-
-            sm:mt-8
-            sm:rounded-[22px]
-            sm:p-5
-          "
-        >
-          <p
-            className="
-              text-[7px]
-              font-extrabold
-              uppercase
-              tracking-[0.16em]
-              text-[#aaa29d]
-
-              sm:text-[8px]
-              sm:tracking-[0.18em]
-            "
-          >
-            Phase 9
-          </p>
-
-          <p
-            className="
-              mt-2
-              text-[11px]
-              font-semibold
-              leading-5
-              text-[#4f4844]
-
-              sm:text-sm
-              sm:leading-6
-            "
-          >
-            Real project enquiry
-            delivery will be connected
-            before the site is launched
-            for clients.
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={
-            onReset
-          }
-          className="
-            group
-            mt-7
-            inline-flex
-            min-h-[50px]
-            w-full
+            flex
+            h-9
+            w-9
+            shrink-0
             items-center
             justify-center
-            gap-3
-            rounded-full
-            bg-[#292929]
-            px-5
-            text-[10px]
-            font-bold
-            text-white
-            transition-all
-            duration-300
-            hover:-translate-y-1
-            hover:bg-[#ff685b]
-
-            min-[480px]:w-fit
-
-            sm:mt-8
-            sm:min-h-[52px]
-            sm:px-6
-            sm:text-[11px]
+            rounded-[11px]
+            bg-[#ff685b]/10
+            text-[#ff8b80]
           "
         >
-          Edit / New Project Brief
-
-          <FaArrowRight
-            size={9}
-            className="
-              transition-transform
-              duration-300
-              group-hover:translate-x-1
-            "
+          <Icon
+            size={11}
           />
-        </button>
+        </div>
+
+        <div>
+          <p
+            className="
+              text-[10px]
+              font-extrabold
+              text-white/82
+            "
+          >
+            {title}
+          </p>
+
+          <p
+            className="
+              mt-1
+              text-[9px]
+              leading-5
+              text-white/35
+            "
+          >
+            {text}
+          </p>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

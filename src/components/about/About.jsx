@@ -80,7 +80,7 @@ const technologies = [
 ========================================================= */
 
 const profileImage =
-  "/images/about/devcraft-profile.jpg";
+  "/public/images/projects/devcraft-profile.jpg.avif";
 
 /* =========================================================
    ABOUT
