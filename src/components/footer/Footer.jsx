@@ -707,12 +707,9 @@ const Footer = () => {
                 sm:leading-7
               "
             >
-              Modern web design and
-              frontend development focused
-              on creating polished,
-              responsive digital
-              experiences for businesses
-              and brands.
+             DevCraft — Web Design, React & Frontend Development Services.
+
+             Modern responsive websites for businesses, brands and startups.
             </p>
 
             {/* ===============================================

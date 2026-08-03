@@ -66,7 +66,7 @@ function InteractiveProcessTimeline() {
               text-[#ff685b]
             "
           >
-            Process
+            My Web Design & Development Process
           </p>
 
           <h2

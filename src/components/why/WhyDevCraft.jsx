@@ -314,7 +314,7 @@ const WhyDevCraft = () => {
             }}
           >
             <div className="eyebrow">
-              Why DevCraft
+              Why businesses choose DevCraft
             </div>
 
             <p
@@ -330,10 +330,12 @@ const WhyDevCraft = () => {
                 sm:leading-7
               "
             >
-              Good websites need more than
-              attractive screens. The design,
-              development and user experience
-              need to work together.
+              DevCraft combines thoughtful 
+              web design with clean frontend
+               development to create websites 
+               that look professional, work smoothly 
+               across devices and clearly communicate
+                what your business offers.
             </p>
           </motion.div>
 

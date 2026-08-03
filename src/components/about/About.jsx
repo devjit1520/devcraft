@@ -236,10 +236,14 @@ const About = () => {
                 sm:leading-7
               "
             >
-              A combination of
-              frontend development,
-              responsive thinking and
-              modern visual design.
+I’m a frontend developer focused on
+ building modern, responsive websites 
+ with HTML, CSS, JavaScript, React and 
+ Tailwind CSS.
+
+Through DevCraft, I help businesses 
+turn ideas and existing websites into 
+polished digital experiences.
             </p>
           </motion.div>
 

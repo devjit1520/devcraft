@@ -486,7 +486,7 @@ const Services = () => {
             }}
           >
             <div className="eyebrow">
-              Services
+             Web Design & Frontend Development Services
             </div>
 
             <p
@@ -502,11 +502,10 @@ const Services = () => {
                 sm:leading-7
               "
             >
-              From focused landing pages
-              to complete business websites,
-              every service is built around
-              clarity, responsiveness and
-              strong frontend execution.
+              From business websites and landing pages
+               to React development and website redesigns,
+                DevCraft creates modern digital experiences
+                 built around your brand and goals.
             </p>
 
             <div

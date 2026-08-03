@@ -526,7 +526,7 @@ const Contact = () => {
                 text-white
               "
             >
-              Have a project
+              Have a project 
               <span
                 className="
                   block
@@ -548,13 +548,9 @@ const Contact = () => {
                 sm:text-[14px]
               "
             >
-              Tell me what
-              you&apos;re planning.
-              I&apos;ll review your
-              enquiry and get back to
-              you to discuss the right
-              direction for your
-              website.
+            Looking for a new business website,
+             frontend development or a website redesign?
+              Tell me about your project and I’ll review your requirements.
             </p>
 
             {/* =============================================

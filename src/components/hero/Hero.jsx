@@ -268,11 +268,14 @@ const Hero = () => {
                 lg:max-w-[560px]
               "
             >
-              I design and develop modern,
-              responsive websites that help
-              businesses look professional,
-              communicate clearly and create
-              stronger digital experiences.
+             
+ DevCraft provides modern web design,
+  frontend development and website
+  redesign services for businesses,
+  brands and startups. I build
+  responsive, performance-focused
+  websites using React, JavaScript
+  and modern frontend technologies.
             </motion.p>
 
             {/* CTA */}

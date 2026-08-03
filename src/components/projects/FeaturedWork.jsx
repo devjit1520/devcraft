@@ -339,7 +339,7 @@ const FeaturedWork = () => {
             }}
           >
             <div className="eyebrow">
-              Selected Work
+              Frontend & Web Design Projects
             </div>
 
             <p
@@ -355,13 +355,11 @@ const FeaturedWork = () => {
                 sm:leading-7
               "
             >
-              A selection of
-              frontend projects
-              focused on modern
-              interfaces, responsive
-              development and
-              practical user
-              experiences.
+Explore selected React,
+ JavaScript and responsive
+  web development projects
+   built with a focus on usability,
+    clean interfaces and modern design.
             </p>
 
             {/* PROJECT COUNT */}
