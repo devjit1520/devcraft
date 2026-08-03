@@ -166,23 +166,50 @@
        STRUCTURED DATA
   ========================================== -->
 
-  <script type="application/ld+json">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://devcraft-services.vercel.app/#website",
+      "url": "https://devcraft-services.vercel.app/",
+      "name": "DevCraft",
+      "description": "Web design and frontend development services for businesses, brands and startups.",
+      "inLanguage": "en"
+    },
+    {
       "@type": "ProfessionalService",
+      "@id": "https://devcraft-services.vercel.app/#business",
       "name": "DevCraft",
       "url": "https://devcraft-services.vercel.app/",
-      "description": "Web design and frontend development services focused on modern, responsive and performance-focused websites.",
-      "areaServed": "Worldwide",
+      "description": "DevCraft provides web design, frontend development, React development, responsive website development and website redesign services.",
+      "areaServed": {
+        "@type": "Place",
+        "name": "Worldwide"
+      },
       "serviceType": [
         "Web Design",
         "Frontend Development",
         "React Development",
         "Website Redesign",
-        "Responsive Web Development"
+        "Responsive Web Development",
+        "Business Website Design"
       ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://devcraft-services.vercel.app/#web-design",
+      "name": "Web Design & Frontend Development",
+      "provider": {
+        "@id": "https://devcraft-services.vercel.app/#business"
+      },
+      "areaServed": "Worldwide",
+      "description": "Modern, responsive and performance-focused websites for businesses, brands and startups."
     }
-  </script>
+  ]
+}
+</script>
 </head>
   <body>
     <div id="root"></div>
