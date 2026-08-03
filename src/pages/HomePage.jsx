@@ -6,7 +6,6 @@ import {
 import Navbar from "../components/navbar/Navbar";
 import Hero from "../components/hero/Hero";
 import ServiceMarquee from "../components/common/ServiceMarquee";
-import HeroSection from "../components/hero/HeroSection";
 import InteractiveProcessTimeline from "../components/process/InteractiveProcessTimeline";
 import WhatsAppFloatingButton from "../components/common/WhatsAppFloatingButton";
 
