@@ -5,6 +5,7 @@ import {
   FaCheck,
   FaCode,
   FaJs,
+  FaLaptopCode,
   FaPlay,
   FaReact,
 } from "react-icons/fa";
@@ -163,10 +164,7 @@ const Hero = () => {
               min-w-0
             "
           >
-
-            {/* ===============================================
-                HEADING
-            =============================================== */}
+            {/* HEADING */}
 
             <motion.h1
               variants={fadeUp}
@@ -246,9 +244,7 @@ const Hero = () => {
               </span>
             </motion.h1>
 
-            {/* ===============================================
-                DESCRIPTION
-            =============================================== */}
+            {/* DESCRIPTION */}
 
             <motion.p
               variants={fadeUp}
@@ -279,9 +275,7 @@ const Hero = () => {
               stronger digital experiences.
             </motion.p>
 
-            {/* ===============================================
-                CTA
-            =============================================== */}
+            {/* CTA */}
 
             <motion.div
               variants={fadeUp}
@@ -390,9 +384,7 @@ const Hero = () => {
               </button>
             </motion.div>
 
-            {/* ===============================================
-                BENEFITS
-            =============================================== */}
+            {/* BENEFITS */}
 
             <motion.div
               variants={fadeUp}
@@ -428,7 +420,7 @@ const Hero = () => {
           </motion.div>
 
           {/* =================================================
-              RIGHT VISUAL
+              NEW PREMIUM RIGHT VISUAL
           ================================================= */}
 
           <motion.div
@@ -455,45 +447,43 @@ const Hero = () => {
               mx-auto
               w-full
               min-w-0
-              max-w-[720px]
+              max-w-[740px]
 
               lg:mx-0
             "
           >
-            {/* ===============================================
+            {/* =================================================
                 VISUAL STAGE
-            =============================================== */}
+            ================================================= */}
 
             <div
               className="
                 relative
-                min-h-[430px]
+                min-h-[440px]
                 overflow-hidden
-                rounded-[28px]
+                rounded-[30px]
                 border
                 border-white/90
                 bg-gradient-to-br
                 from-[#fff4f0]
-                via-[#fffdfb]
-                to-[#f2f7ff]
-                p-3
-                shadow-[0_28px_80px_rgba(67,43,34,0.09)]
+                via-[#fffdfa]
+                to-[#eef4ff]
+                shadow-[0_34px_100px_rgba(63,42,34,0.11)]
 
-                min-[360px]:min-h-[460px]
-                min-[360px]:p-4
+                min-[360px]:min-h-[470px]
 
-                sm:min-h-[560px]
-                sm:rounded-[34px]
-                sm:p-6
+                sm:min-h-[580px]
+                sm:rounded-[38px]
 
-                md:min-h-[610px]
-                md:p-7
+                md:min-h-[630px]
 
-                lg:min-h-[610px]
+                lg:min-h-[620px]
 
-                xl:min-h-[650px]
+                xl:min-h-[660px]
               "
             >
+              {/* GRID */}
+
               <div
                 aria-hidden="true"
                 className="
@@ -502,89 +492,105 @@ const Hero = () => {
                   inset-0
                   background-grid
                   opacity-[0.32]
-
-                  sm:opacity-[0.42]
                 "
               />
 
-              {/* =============================================
-                  CORAL ORB
-              ============================================= */}
+              {/* CORAL ORB */}
 
               <motion.div
                 animate={{
-                  y: [0, -10, 0],
+                  y: [
+                    0,
+                    -12,
+                    0,
+                  ],
+                  rotate: [
+                    0,
+                    3,
+                    0,
+                  ],
                 }}
                 transition={{
-                  duration: 5,
+                  duration: 6,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
                 className="
                   absolute
-                  -right-10
-                  top-8
-                  h-[110px]
-                  w-[110px]
+                  -right-[55px]
+                  top-[32px]
+                  h-[145px]
+                  w-[145px]
                   rounded-full
                   bg-gradient-to-br
-                  from-[#ff8b78]
+                  from-[#ff8879]
                   to-[#ff5f53]
-                  shadow-[0_24px_50px_rgba(255,104,91,0.20)]
+                  shadow-[0_24px_55px_rgba(255,104,91,0.22)]
 
-                  min-[360px]:h-[130px]
-                  min-[360px]:w-[130px]
+                  sm:-right-[75px]
+                  sm:h-[215px]
+                  sm:w-[215px]
 
-                  sm:-right-10
-                  sm:top-10
-                  sm:h-[180px]
-                  sm:w-[180px]
-
-                  md:h-[210px]
-                  md:w-[210px]
+                  md:h-[240px]
+                  md:w-[240px]
                 "
               />
 
-              {/* =============================================
-                  BLUE ORB
-              ============================================= */}
+              {/* BLUE SHAPE */}
 
               <motion.div
                 animate={{
-                  y: [0, 9, 0],
+                  y: [
+                    0,
+                    10,
+                    0,
+                  ],
                 }}
                 transition={{
-                  duration: 4.8,
+                  duration: 5.3,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
                 className="
                   absolute
-                  bottom-[10%]
-                  left-[5%]
-                  h-11
-                  w-11
+                  -left-5
+                  bottom-[7%]
+                  h-[70px]
+                  w-[70px]
                   rounded-full
-                  bg-[#5688ff]
-                  shadow-[0_16px_35px_rgba(86,136,255,0.17)]
+                  bg-[#5788ff]
+                  shadow-[0_18px_40px_rgba(87,136,255,0.18)]
 
-                  sm:h-16
-                  sm:w-16
-
-                  md:h-20
-                  md:w-20
+                  sm:h-[100px]
+                  sm:w-[100px]
                 "
               />
 
-              {/* =============================================
-                  MAIN WEBSITE WINDOW
-              ============================================= */}
+              {/* SOFT CORAL GLOW */}
+
+              <div
+                aria-hidden="true"
+                className="
+                  absolute
+                  right-[8%]
+                  top-[20%]
+                  h-[260px]
+                  w-[260px]
+                  rounded-full
+                  bg-[#ff685b]/10
+                  blur-[85px]
+                "
+              />
+
+              {/* =================================================
+                  MAIN BROWSER
+              ================================================= */}
 
               <motion.div
                 initial={{
                   opacity: 0,
-                  y: 25,
-                  scale: 0.97,
+                  y: 28,
+                  scale: 0.965,
                 }}
                 animate={{
                   opacity: 1,
@@ -593,30 +599,34 @@ const Hero = () => {
                 }}
                 transition={{
                   duration: 0.8,
-                  delay: 0.4,
+                  delay: 0.35,
+                  ease: [
+                    0.22,
+                    1,
+                    0.36,
+                    1,
+                  ],
                 }}
                 className="
                   absolute
                   left-1/2
                   top-1/2
                   z-10
-                  w-[88%]
+                  w-[84%]
                   -translate-x-1/2
                   -translate-y-1/2
                   overflow-hidden
-                  rounded-[20px]
+                  rounded-[24px]
                   border
                   border-white
-                  bg-white/84
-                  shadow-[0_24px_65px_rgba(64,43,35,0.13)]
-                  backdrop-blur-[20px]
+                  bg-white/90
+                  shadow-[0_30px_80px_rgba(55,37,30,0.13)]
+                  backdrop-blur-xl
 
-                  min-[360px]:w-[85%]
+                  sm:w-[78%]
+                  sm:rounded-[30px]
 
-                  sm:w-[80%]
-                  sm:rounded-[26px]
-
-                  md:w-[78%]
+                  md:w-[76%]
                 "
               >
                 {/* TOOLBAR */}
@@ -624,420 +634,446 @@ const Hero = () => {
                 <div
                   className="
                     flex
-                    h-9
+                    h-11
                     items-center
                     justify-between
                     border-b
                     border-[#eee8e5]
-                    px-3
+                    px-4
 
-                    sm:h-11
-                    sm:px-4
-
-                    md:h-12
+                    sm:h-13
+                    sm:px-5
                   "
                 >
-                  <div
-                    className="
-                      flex
-                      gap-1
-                      sm:gap-1.5
-                    "
-                  >
+                  <div className="flex gap-1.5">
                     <span
                       className="
-                        h-1.5
-                        w-1.5
+                        h-2
+                        w-2
                         rounded-full
-                        bg-[#ff776c]
-
-                        sm:h-2
-                        sm:w-2
+                        bg-[#ff7d70]
                       "
                     />
 
                     <span
                       className="
-                        h-1.5
-                        w-1.5
+                        h-2
+                        w-2
                         rounded-full
-                        bg-[#ffc764]
-
-                        sm:h-2
-                        sm:w-2
+                        bg-[#ffc96b]
                       "
                     />
 
                     <span
                       className="
-                        h-1.5
-                        w-1.5
+                        h-2
+                        w-2
                         rounded-full
-                        bg-[#68c88c]
-
-                        sm:h-2
-                        sm:w-2
+                        bg-[#6ac994]
                       "
                     />
                   </div>
 
                   <div
                     className="
-                      h-4
-                      w-[34%]
+                      h-5
+                      w-[38%]
                       rounded-full
-                      bg-[#f4f0ee]
-
-                      sm:h-5
-                      sm:w-[38%]
+                      bg-[#f3efed]
                     "
                   />
 
                   <span
                     className="
-                      text-[6px]
-                      font-bold
+                      text-[7px]
+                      font-extrabold
                       uppercase
-                      tracking-[0.1em]
-                      text-[#aaa39f]
+                      tracking-[0.16em]
+                      text-[#aaa29e]
 
-                      sm:text-[7px]
-
-                      md:text-[8px]
+                      sm:text-[8px]
                     "
                   >
                     DevCraft
                   </span>
                 </div>
 
-                {/* ===========================================
-                    MOCK WEBSITE
-                =========================================== */}
+                {/* =================================================
+                    WEBSITE CONTENT
+                ================================================= */}
 
                 <div
                   className="
                     relative
                     overflow-hidden
-                    px-4
-                    py-5
+                    px-5
+                    py-6
 
-                    sm:px-5
-                    sm:py-7
+                    sm:px-7
+                    sm:py-9
 
-                    md:px-7
-                    md:py-9
+                    md:px-8
+                    md:py-10
                   "
                 >
+                  {/* GLOW */}
+
                   <div
                     aria-hidden="true"
                     className="
+                      pointer-events-none
                       absolute
-                      -right-12
-                      -top-10
-                      h-32
-                      w-32
+                      -right-16
+                      top-8
+                      h-40
+                      w-40
                       rounded-full
                       bg-[#ff685b]/10
-                      blur-3xl
+                      blur-[55px]
                     "
                   />
 
-                  <div className="relative">
-                    {/* MOCK NAV */}
+                  {/* TOP MINI NAV */}
+
+                  <div
+                    className="
+                      relative
+                      flex
+                      items-center
+                      justify-between
+                    "
+                  >
+                    <span
+                      className="
+                        text-[8px]
+                        font-black
+                        tracking-[-0.04em]
+                        text-[#292929]
+
+                        sm:text-[10px]
+                      "
+                    >
+                      DEVCRAFT.
+                    </span>
 
                     <div
                       className="
                         flex
                         items-center
-                        justify-between
+                        gap-2
                       "
                     >
                       <span
                         className="
-                          text-[7px]
-                          font-black
-                          tracking-[-0.04em]
-                          text-[#292929]
-
-                          sm:text-[9px]
-
-                          md:text-[10px]
+                          h-1.5
+                          w-7
+                          rounded-full
+                          bg-[#ded8d4]
                         "
-                      >
-                        NORTHSTAR.
-                      </span>
+                      />
 
-                      <div
+                      <span
                         className="
-                          flex
-                          gap-1.5
+                          h-1.5
+                          w-5
+                          rounded-full
+                          bg-[#e7e1dd]
                         "
-                      >
-                        <span
-                          className="
-                            h-1
-                            w-5
-                            rounded-full
-                            bg-[#ded8d4]
+                      />
 
-                            sm:h-1.5
-                            sm:w-7
-                          "
-                        />
-
-                        <span
-                          className="
-                            h-1
-                            w-4
-                            rounded-full
-                            bg-[#ded8d4]
-
-                            sm:h-1.5
-                            sm:w-5
-                          "
-                        />
-                      </div>
+                      <span
+                        className="
+                          h-5
+                          w-9
+                          rounded-full
+                          bg-[#292929]
+                        "
+                      />
                     </div>
+                  </div>
 
-                    {/* MOCK HERO */}
+                  {/* MAIN TEXT */}
+
+                  <div
+                    className="
+                      relative
+                      mt-9
+                      max-w-[350px]
+
+                      sm:mt-12
+                    "
+                  >
+                    <p
+                      className="
+                        text-[7px]
+                        font-extrabold
+                        uppercase
+                        tracking-[0.18em]
+                        text-[#ff685b]
+
+                        sm:text-[8px]
+                      "
+                    >
+                      Digital Experience
+                    </p>
+
+                    <h3
+                      className="
+                        mt-3
+                        text-[clamp(1.65rem,7vw,2.5rem)]
+                        font-bold
+                        leading-[0.91]
+                        tracking-[-0.06em]
+                        text-[#292929]
+
+                        sm:text-[clamp(2.4rem,5vw,3.7rem)]
+                      "
+                    >
+                      Websites that
+                      <br />
+
+                      feel as good
+                      <br />
+
+                      as they{" "}
+
+                      <span className="text-[#ff685b]">
+                        look.
+                      </span>
+                    </h3>
+
+                    <p
+                      className="
+                        mt-4
+                        max-w-[285px]
+                        text-[8px]
+                        leading-4
+                        text-[#857d79]
+
+                        sm:text-[10px]
+                        sm:leading-5
+                      "
+                    >
+                      Design, development
+                      and interaction working
+                      together to create a
+                      stronger digital presence.
+                    </p>
 
                     <div
                       className="
-                        mt-6
-                        max-w-[280px]
+                        mt-5
+                        inline-flex
+                        items-center
+                        gap-2
+                        rounded-full
+                        bg-[#ff685b]
+                        px-4
+                        py-2.5
+                        text-[7px]
+                        font-bold
+                        text-white
+                        shadow-[0_12px_25px_rgba(255,104,91,0.20)]
 
-                        sm:mt-8
+                        sm:px-5
+                        sm:py-3
+                        sm:text-[8px]
+                      "
+                    >
+                      Explore Work
 
-                        md:mt-10
-                        md:max-w-[330px]
+                      <FaArrowRight
+                        size={7}
+                      />
+                    </div>
+                  </div>
+
+                  {/* =================================================
+                      CREATIVE MINI DASHBOARD
+                  ================================================= */}
+
+                  <div
+                    className="
+                      mt-7
+                      grid
+                      grid-cols-[0.92fr_1.08fr]
+                      gap-2.5
+
+                      sm:mt-10
+                      sm:gap-3
+                    "
+                  >
+                    {/* LEFT CARD */}
+
+                    <div
+                      className="
+                        rounded-[15px]
+                        bg-[#faf6f3]
+                        p-3.5
+
+                        sm:rounded-[20px]
+                        sm:p-5
                       "
                     >
                       <p
                         className="
                           text-[6px]
-                          font-bold
+                          font-extrabold
                           uppercase
                           tracking-[0.15em]
-                          text-[#ff685b]
+                          text-[#aaa29d]
 
                           sm:text-[7px]
-
-                          md:text-[8px]
                         "
                       >
-                        Digital Experience
+                        Experience
                       </p>
-
-                      <h3
-                        className="
-                          mt-2
-                          text-[clamp(1.3rem,7vw,2rem)]
-                          font-bold
-                          leading-[0.92]
-                          tracking-[-0.06em]
-                          text-[#292929]
-
-                          sm:mt-3
-                          sm:text-[clamp(2rem,6vw,3rem)]
-
-                          md:text-[clamp(2.3rem,4vw,3.5rem)]
-                        "
-                      >
-                        Better ideas
-                        deserve better
-                        websites.
-                      </h3>
 
                       <p
                         className="
-                          mt-3
-                          max-w-[230px]
-                          text-[7px]
-                          leading-3.5
-                          text-[#88817d]
+                          mt-2
+                          text-[10px]
+                          font-bold
+                          leading-4
+                          text-[#37312e]
 
-                          sm:mt-4
-                          sm:text-[9px]
-                          sm:leading-4
-
-                          md:max-w-[260px]
-                          md:text-[10px]
-                          md:leading-5
+                          sm:text-[12px]
+                          sm:leading-5
                         "
                       >
-                        Modern digital
-                        experiences designed
-                        to communicate,
-                        connect and convert.
+                        Thoughtful UI
+                        for modern brands.
                       </p>
 
                       <div
                         className="
                           mt-4
-                          inline-flex
+                          flex
                           items-center
                           gap-1.5
-                          rounded-full
-                          bg-[#ff685b]
-                          px-3
-                          py-2
-                          text-[6px]
-                          font-bold
-                          text-white
-
-                          sm:mt-5
-                          sm:gap-2
-                          sm:px-4
-                          sm:py-2.5
-                          sm:text-[8px]
-
-                          md:text-[9px]
                         "
                       >
-                        Explore Project
+                        <span
+                          className="
+                            h-1.5
+                            w-[45%]
+                            rounded-full
+                            bg-[#ff685b]
+                          "
+                        />
 
-                        <FaArrowRight
-                          size={7}
+                        <span
+                          className="
+                            h-1.5
+                            w-[25%]
+                            rounded-full
+                            bg-[#ddd6d2]
+                          "
+                        />
+
+                        <span
+                          className="
+                            h-1.5
+                            w-[14%]
+                            rounded-full
+                            bg-[#ebe5e1]
+                          "
                         />
                       </div>
                     </div>
 
-                    {/* =======================================
-                        MINI CONTENT
-                    ======================================= */}
+                    {/* DARK CARD */}
 
                     <div
                       className="
-                        mt-5
-                        grid
-                        grid-cols-[1.15fr_0.85fr]
-                        gap-2
+                        relative
+                        overflow-hidden
+                        rounded-[15px]
+                        bg-[#292929]
+                        p-4
 
-                        sm:mt-7
-                        sm:gap-3
-
-                        md:mt-9
+                        sm:rounded-[20px]
+                        sm:p-5
                       "
                     >
                       <div
+                        aria-hidden="true"
                         className="
-                          min-h-[62px]
-                          rounded-[12px]
-                          bg-[#f8f4f1]
-                          p-3
+                          absolute
+                          -bottom-8
+                          -right-7
+                          h-20
+                          w-20
+                          rounded-full
+                          bg-[#ff685b]
 
-                          sm:min-h-[80px]
-                          sm:rounded-[16px]
-                          sm:p-4
-
-                          md:min-h-[95px]
-                          md:rounded-[18px]
+                          sm:h-24
+                          sm:w-24
                         "
-                      >
-                        <div
-                          className="
-                            h-1.5
-                            w-[42%]
-                            rounded-full
-                            bg-[#292929]
+                      />
 
-                            sm:h-2
-                          "
-                        />
-
-                        <div
-                          className="
-                            mt-2
-                            h-1
-                            w-[75%]
-                            rounded-full
-                            bg-[#ddd6d2]
-
-                            sm:mt-3
-                            sm:h-1.5
-                          "
-                        />
-
-                        <div
-                          className="
-                            mt-1.5
-                            h-1
-                            w-[58%]
-                            rounded-full
-                            bg-[#e8e1dd]
-
-                            sm:mt-2
-                            sm:h-1.5
-                          "
-                        />
-                      </div>
-
-                      <div
+                      <FaCode
                         className="
                           relative
-                          min-h-[62px]
-                          overflow-hidden
-                          rounded-[12px]
-                          bg-[#292929]
+                          text-[18px]
+                          text-white
 
-                          sm:min-h-[80px]
-                          sm:rounded-[16px]
+                          sm:text-[23px]
+                        "
+                      />
 
-                          md:min-h-[95px]
-                          md:rounded-[18px]
+                      <p
+                        className="
+                          relative
+                          mt-4
+                          text-[6px]
+                          font-bold
+                          uppercase
+                          tracking-[0.15em]
+                          text-white/40
+
+                          sm:text-[7px]
                         "
                       >
-                        <div
-                          className="
-                            absolute
-                            -bottom-7
-                            -right-5
-                            h-16
-                            w-16
-                            rounded-full
-                            bg-[#ff685b]
+                        Development
+                      </p>
 
-                            sm:h-20
-                            sm:w-20
-                          "
-                        />
+                      <p
+                        className="
+                          relative
+                          mt-1
+                          max-w-[110px]
+                          text-[9px]
+                          font-bold
+                          leading-4
+                          text-white
 
-                        <FaCode
-                          size={16}
-                          className="
-                            absolute
-                            left-3
-                            top-3
-                            text-white
-
-                            sm:left-4
-                            sm:top-4
-                            sm:text-[20px]
-
-                            md:text-[24px]
-                          "
-                        />
-                      </div>
+                          sm:text-[11px]
+                          sm:leading-5
+                        "
+                      >
+                        Clean frontend.
+                        Smooth experience.
+                      </p>
                     </div>
                   </div>
                 </div>
               </motion.div>
 
-              {/* =============================================
-                  REACT CARD
-                  Hidden on very small phones.
-              ============================================= */}
+              {/* =================================================
+                  REACT FLOAT CARD
+              ================================================= */}
 
               <FloatingCard
                 className="
-                  left-[3%]
-                  top-[8%]
+                  left-[2%]
+                  top-[12%]
                   z-20
                   hidden
 
                   min-[390px]:block
 
-                  sm:left-[4%]
+                  sm:left-[3%]
                   sm:top-[13%]
                 "
                 delay={0.7}
@@ -1046,7 +1082,7 @@ const Hero = () => {
                   className="
                     flex
                     items-center
-                    gap-2
+                    gap-2.5
 
                     sm:gap-3
                   "
@@ -1054,21 +1090,20 @@ const Hero = () => {
                   <div
                     className="
                       flex
-                      h-8
-                      w-8
+                      h-9
+                      w-9
                       items-center
                       justify-center
-                      rounded-[10px]
+                      rounded-xl
                       bg-[#edf7ff]
                       text-[#4b8ce8]
 
-                      sm:h-10
-                      sm:w-10
-                      sm:rounded-xl
+                      sm:h-11
+                      sm:w-11
                     "
                   >
                     <FaReact
-                      size={16}
+                      size={18}
                     />
                   </div>
 
@@ -1076,13 +1111,12 @@ const Hero = () => {
                     <p
                       className="
                         text-[6px]
-                        font-bold
+                        font-extrabold
                         uppercase
-                        tracking-[0.1em]
+                        tracking-[0.14em]
                         text-[#aaa39f]
 
-                        sm:text-[8px]
-                        sm:tracking-[0.14em]
+                        sm:text-[7px]
                       "
                     >
                       Frontend
@@ -1090,23 +1124,91 @@ const Hero = () => {
 
                     <p
                       className="
-                        mt-0.5
+                        mt-1
                         text-[9px]
                         font-bold
                         text-[#37312e]
 
-                        sm:text-xs
+                        sm:text-[11px]
                       "
                     >
-                      React
+                      React Development
                     </p>
                   </div>
                 </div>
               </FloatingCard>
 
-              {/* =============================================
-                  JAVASCRIPT CARD
-              ============================================= */}
+              {/* =================================================
+                  RESPONSIVE FLOAT CARD
+              ================================================= */}
+
+              <FloatingCard
+                className="
+                  right-[2%]
+                  top-[40%]
+                  z-20
+                  hidden
+
+                  sm:block
+
+                  md:right-[3%]
+                "
+                delay={0.82}
+              >
+                <div
+                  className="
+                    flex
+                    items-center
+                    gap-3
+                  "
+                >
+                  <div
+                    className="
+                      flex
+                      h-10
+                      w-10
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-[#fff0ed]
+                      text-[#ff685b]
+                    "
+                  >
+                    <FaLaptopCode
+                      size={16}
+                    />
+                  </div>
+
+                  <div>
+                    <p
+                      className="
+                        text-[7px]
+                        font-bold
+                        uppercase
+                        tracking-[0.14em]
+                        text-[#aaa29d]
+                      "
+                    >
+                      Responsive
+                    </p>
+
+                    <p
+                      className="
+                        mt-1
+                        text-[10px]
+                        font-bold
+                        text-[#37312e]
+                      "
+                    >
+                      Every screen matters
+                    </p>
+                  </div>
+                </div>
+              </FloatingCard>
+
+              {/* =================================================
+                  JAVASCRIPT FLOAT CARD
+              ================================================= */}
 
               <FloatingCard
                 className="
@@ -1117,16 +1219,15 @@ const Hero = () => {
 
                   min-[410px]:block
 
-                  sm:bottom-[14%]
-                  sm:right-[3%]
+                  sm:bottom-[10%]
                 "
-                delay={0.9}
+                delay={0.95}
               >
                 <div
                   className="
                     flex
                     items-center
-                    gap-2
+                    gap-2.5
 
                     sm:gap-3
                   "
@@ -1134,46 +1235,46 @@ const Hero = () => {
                   <div
                     className="
                       flex
-                      h-8
-                      w-8
+                      h-9
+                      w-9
                       items-center
                       justify-center
-                      rounded-[10px]
-                      bg-[#fff9df]
-                      text-[#d8ac2d]
+                      rounded-xl
+                      bg-[#fff8dd]
+                      text-[#d4a920]
 
-                      sm:h-10
-                      sm:w-10
-                      sm:rounded-xl
+                      sm:h-11
+                      sm:w-11
                     "
                   >
-                    <FaJs size={16} />
+                    <FaJs
+                      size={18}
+                    />
                   </div>
 
                   <div>
                     <p
                       className="
                         text-[6px]
-                        font-bold
+                        font-extrabold
                         uppercase
-                        tracking-[0.1em]
+                        tracking-[0.14em]
                         text-[#aaa39f]
 
-                        sm:text-[8px]
-                        sm:tracking-[0.14em]
+                        sm:text-[7px]
                       "
                     >
-                      Logic
+                      Technology
                     </p>
 
                     <p
                       className="
-                        mt-0.5
+                        mt-1
                         text-[9px]
                         font-bold
                         text-[#37312e]
 
-                        sm:text-xs
+                        sm:text-[11px]
                       "
                     >
                       JavaScript
@@ -1182,10 +1283,9 @@ const Hero = () => {
                 </div>
               </FloatingCard>
 
-              {/* =============================================
-                  PERFORMANCE CARD
-                  Tablet and above only.
-              ============================================= */}
+              {/* =================================================
+                  PERFORMANCE FLOAT CARD
+              ================================================= */}
 
               <motion.div
                 initial={{
@@ -1205,19 +1305,16 @@ const Hero = () => {
                 className="
                   glass-card-premium
                   absolute
-                  bottom-[7%]
-                  left-[6%]
+                  bottom-[6%]
+                  left-[4%]
                   z-20
                   hidden
-                  items-center
-                  rounded-[18px]
-                  p-3
+                  rounded-[20px]
+                  p-3.5
 
-                  sm:flex
+                  sm:block
 
-                  md:bottom-[8%]
-                  md:left-[7%]
-                  md:rounded-[20px]
+                  md:left-[5%]
                   md:p-4
                 "
               >
@@ -1225,17 +1322,15 @@ const Hero = () => {
                   className="
                     flex
                     items-center
-                    gap-3
-
-                    md:gap-4
+                    gap-3.5
                   "
                 >
                   <div
                     className="
                       relative
                       flex
-                      h-11
-                      w-11
+                      h-12
+                      w-12
                       items-center
                       justify-center
                       rounded-full
@@ -1245,7 +1340,15 @@ const Hero = () => {
                       md:w-14
                     "
                   >
-                    <div
+                    <motion.div
+                      animate={{
+                        rotate: 360,
+                      }}
+                      transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
                       className="
                         absolute
                         inset-1
@@ -1263,7 +1366,7 @@ const Hero = () => {
                         font-black
                         text-[#27885a]
 
-                        md:text-[11px]
+                        md:text-[10px]
                       "
                     >
                       UX
@@ -1274,13 +1377,10 @@ const Hero = () => {
                     <p
                       className="
                         text-[7px]
-                        font-bold
+                        font-extrabold
                         uppercase
-                        tracking-[0.12em]
-                        text-[#aaa39f]
-
-                        md:text-[8px]
-                        md:tracking-[0.15em]
+                        tracking-[0.15em]
+                        text-[#aaa29d]
                       "
                     >
                       Performance
@@ -1289,22 +1389,23 @@ const Hero = () => {
                     <p
                       className="
                         mt-1
-                        text-[9px]
+                        text-[10px]
                         font-bold
                         text-[#37312e]
 
-                        md:text-xs
+                        md:text-[11px]
                       "
                     >
-                      Built with speed in mind
+                      Built with speed
+                      in mind
                     </p>
                   </div>
                 </div>
               </motion.div>
 
-              {/* =============================================
-                  TAILWIND ICON
-              ============================================= */}
+              {/* =================================================
+                  TAILWIND FLOAT ICON
+              ================================================= */}
 
               <motion.div
                 initial={{
@@ -1314,7 +1415,11 @@ const Hero = () => {
                 animate={{
                   opacity: 1,
                   scale: 1,
-                  y: [0, -7, 0],
+                  y: [
+                    0,
+                    -7,
+                    0,
+                  ],
                 }}
                 transition={{
                   opacity: {
@@ -1337,15 +1442,15 @@ const Hero = () => {
                 className="
                   glass-card
                   absolute
-                  right-[8%]
-                  top-[23%]
+                  right-[9%]
+                  top-[21%]
                   z-20
                   hidden
-                  h-11
-                  w-11
+                  h-12
+                  w-12
                   items-center
                   justify-center
-                  rounded-[14px]
+                  rounded-[16px]
                   text-[#38bdf8]
 
                   sm:flex
@@ -1356,13 +1461,13 @@ const Hero = () => {
                 "
               >
                 <SiTailwindcss
-                  size={21}
+                  size={22}
                 />
               </motion.div>
 
-              {/* =============================================
-                  VITE ICON
-              ============================================= */}
+              {/* =================================================
+                  VITE FLOAT ICON
+              ================================================= */}
 
               <motion.div
                 initial={{
@@ -1372,7 +1477,11 @@ const Hero = () => {
                 animate={{
                   opacity: 1,
                   scale: 1,
-                  y: [0, 7, 0],
+                  y: [
+                    0,
+                    7,
+                    0,
+                  ],
                 }}
                 transition={{
                   opacity: {
@@ -1396,24 +1505,25 @@ const Hero = () => {
                   glass-card
                   absolute
                   right-[4%]
-                  top-[52%]
+                  top-[60%]
                   z-20
                   hidden
-                  h-10
-                  w-10
+                  h-11
+                  w-11
                   items-center
                   justify-center
-                  rounded-[13px]
+                  rounded-[15px]
                   text-[#7257ff]
 
                   md:flex
 
                   md:h-12
                   md:w-12
-                  md:rounded-[16px]
                 "
               >
-                <SiVite size={19} />
+                <SiVite
+                  size={19}
+                />
               </motion.div>
             </div>
           </motion.div>
@@ -1546,7 +1656,9 @@ const HeroBenefit = ({
           text-[#ff685b]
         "
       >
-        <FaCheck size={7} />
+        <FaCheck
+          size={7}
+        />
       </span>
 
       <span
@@ -1583,7 +1695,11 @@ const FloatingCard = ({
       }}
       animate={{
         opacity: 1,
-        y: [0, -6, 0],
+        y: [
+          0,
+          -6,
+          0,
+        ],
         scale: 1,
       }}
       transition={{
@@ -1598,7 +1714,8 @@ const FloatingCard = ({
         },
 
         y: {
-          delay: delay + 0.4,
+          delay:
+            delay + 0.4,
           duration: 4.5,
           repeat: Infinity,
           ease: "easeInOut",
