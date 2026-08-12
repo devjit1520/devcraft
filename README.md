@@ -1,20 +1,42 @@
-<<<<<<< HEAD
-# React + Vite
+# DevCraft
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern frontend development and web design services website built with React.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+https://devcraft-peach.vercel.app/
 
-## React Compiler
+## About
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+DevCraft is a responsive service website designed to showcase frontend development, website redesign, responsive web design, and modern UI development services.
 
-## Expanding the Oxlint configuration
+The project focuses on professional presentation, responsive layouts, performance, SEO, reusable React components, animations, and conversion-focused user experience.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
-=======
-# devcraft
->>>>>>> 93f32dde222ecd6fea8ee4c88089212b0f00bb5a
+## Highlights
+
+- Modern responsive interface
+- Service presentation
+- Interactive sections
+- Premium UI design
+- Contact form integration
+- SEO optimization
+- Social metadata
+- Responsive navigation
+- Smooth animations
+- Vercel deployment
+
+## Tech Stack
+
+- React
+- JavaScript
+- CSS
+- Framer Motion
+- EmailJS
+- Vite
+- Vercel
+
+## Author
+
+**Devjit Mondal**
+
+Frontend Developer
