@@ -10,7 +10,7 @@
 
 A modern React service website built to present web design, frontend development, redesign, responsive UI and maintenance services through a polished, conversion-focused experience.
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Open_DevCraft-111111?style=for-the-badge&logo=vercel&logoColor=ffffff)](https://devcraft-peach.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Open_DevCraft-111111?style=for-the-badge&logo=vercel&logoColor=ffffff)](https://devcraft-services.vercel.app/)
 [![React](https://img.shields.io/badge/React-19-111111?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-111111?style=for-the-badge&logo=tailwindcss&logoColor=06B6D4)](https://tailwindcss.com/)
 [![EmailJS](https://img.shields.io/badge/EmailJS-Contact_Form-111111?style=for-the-badge&logo=gmail&logoColor=EA4335)](https://www.emailjs.com/)
@@ -31,7 +31,7 @@ From an engineering perspective, the homepage keeps critical content such as the
 
 ## Live Application
 
-**Production:** https://devcraft-peach.vercel.app/
+**Production:** https://devcraft-services.vercel.app/
 
 ---
 
@@ -148,12 +148,11 @@ The project contains an SEO-focused document head with:
 - Twitter/X card metadata
 - Social preview image support
 - Theme-color metadata
-- Google Search Console verification slot
 - Structured data using JSON-LD
 
 Structured data describes the project as a website and professional service and includes web design and frontend-development service information.
 
-> When using a different production domain, update the canonical URL, Open Graph URL, social preview URLs and Search Console verification value in `index.html` so they match the final deployment.
+The canonical URL, Open Graph URL, social preview URLs and JSON-LD references are aligned with the production domain: `https://devcraft-services.vercel.app/`.
 
 ---
 
